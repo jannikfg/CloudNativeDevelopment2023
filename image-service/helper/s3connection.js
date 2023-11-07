@@ -1,5 +1,6 @@
 const { Upload } = require("@aws-sdk/lib-storage");
-const { S3Client } = require("@aws-sdk/client-s3");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { IncomingForm } = require("formidable");
 const Transform = require("stream").Transform;
 
@@ -17,7 +18,22 @@ const s3client = new S3Client({
   region,
 });
 
-const parsefile = async (req) => {
+const downloadFromS3 = async (key) => {
+  const input = {
+    Bucket: process.env.BUCKET_NAME,
+    Key: key,
+  };
+  const command = new GetObjectCommand(input);
+  try {
+    const url = getSignedUrl(s3client, command, { expiresIn: 3600 });
+    return url;
+  } catch (err) {
+    console.error("Error fetching from S3: ", err);
+    throw err;
+  }
+};
+
+const uploadToS3 = async (req) => {
   return new Promise((resolve, reject) => {
     let options = {
       maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
@@ -84,4 +100,4 @@ const parsefile = async (req) => {
   });
 };
 
-module.exports = parsefile;
+module.exports = { uploadToS3, downloadFromS3 };

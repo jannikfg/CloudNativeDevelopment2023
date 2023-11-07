@@ -4,23 +4,8 @@ require("dotenv").config();
 
 app.set("json spaces", 5); // to prettify json response
 
-const fileparser = require("./helper/fileparser");
-
-app.post("/api/v1/images", async (req, res) => {
-  await fileparser(req)
-    .then((data) => {
-      res.status(200).json({
-        message: "Success",
-        data,
-      });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        message: "An error occurred.",
-        error,
-      });
-    });
-});
+const ImageRoute = require("./routes/image-route");
+app.use("/api/v1/images", ImageRoute);
 
 app.get("/", (req, res) => {
   res.send(`
