@@ -7,12 +7,16 @@
 <section id="rides">
     {#each rides as ride}
         <RideItem
+            id={ride.id}
             from={ride.from}
             to={ride.to}
             date={ride.date}
             time={ride.time}
             driver={ride.driver}
+            email={ride.email}
             description={ride.description}
+            isFav={ride.isFavorite}
+            on:togglefavorite
         />
     {/each}
 </section>

@@ -4,11 +4,13 @@
     import TextInput from "./UI/TextInput.svelte";
     import Button from "./UI/Button.svelte";
 
+    let id = "";
     let from = "";
     let to = "";
     let date = "";
     let time = "";
     let driver = "";
+    let email = "";
     let description = "";
 
     let rides = [
@@ -19,7 +21,9 @@
             date: "05.11.2023",
             time: "15:00",
             driver: "Jannik Füllgraf",
+            email: "jannik@test.de",
             description: "Dies ist eine Beschreibung der Reise",
+            isFavorite: false,
         },
         {
             id: "r2",
@@ -28,7 +32,9 @@
             date: "05.11.2023",
             time: "17:00",
             driver: "Manuel Wittmann",
+            email: "manuel@test.de",
             description: "Dies ist eine Beschreibung der Reise",
+            isFavorite: false,
         },
     ];
 
@@ -40,10 +46,21 @@
             date: date,
             time: time,
             driver: driver,
+            email: email,
             description: description,
         };
 
         rides = [...rides, newRide];
+    }
+
+    function togglefavorite(event) {
+        const id = event.detail;
+        const updatedRide = { ...rides.find((m) => m.id === id) };
+        updatedRide.isFavorite = !updatedRide.isFavorite;
+        const rideIndex = rides.findIndex((m) => m.id === id);
+        const updatedRides = [...rides];
+        updatedRides[rideIndex] = updatedRide;
+        rides = updatedRides;
     }
 </script>
 
@@ -92,6 +109,14 @@
         />
 
         <TextInput
+            id="email"
+            label="Email"
+            value={email}
+            type="text"
+            on:input={(event) => (email = event.target.value)}
+        />
+
+        <TextInput
             id="description"
             label="Description"
             value={description}
@@ -101,7 +126,7 @@
         />
         <Button type="submit" caption="Save" />
     </form>
-    <RideGrid {rides} />
+    <RideGrid {rides} on:togglefavorite={togglefavorite} />
 </main>
 
 <style>
