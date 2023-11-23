@@ -27,7 +27,7 @@
     }
 </script>
 
-<form on:submit|preventDefault={addRide}>
+<form on:submit|preventDefault={submitForm}>
     <TextInput
         id="from"
         label="From"

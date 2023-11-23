@@ -41,19 +41,20 @@
 
     let editMode = null;
 
-    function addRide() {
+    function addRide(event) {
         const newRide = {
             id: Math.random().toString,
-            from: from,
-            to: to,
-            date: date,
-            time: time,
-            driver: driver,
-            email: email,
-            description: description,
+            from: event.detail.from,
+            to: event.detail.to,
+            date: event.detail.date,
+            time: event.detail.time,
+            driver: event.detail.driver,
+            email: event.detail.email,
+            description: event.detail.description,
         };
 
         rides = [...rides, newRide];
+        editMode = null;
     }
 
     function togglefavorite(event) {
@@ -70,9 +71,11 @@
 <Header />
 
 <main>
-    <Button caption="New Ride" on:click={() => (editMode = "add")} />
+    <div class="ride-controls">
+        <Button caption="New Ride" on:click={() => (editMode = "add")} />
+    </div>
     {#if editMode === "add"}
-        <EditRide />
+        <EditRide on:save={addRide} />
     {/if}
     <RideGrid {rides} on:togglefavorite={togglefavorite} />
 </main>
@@ -80,5 +83,9 @@
 <style>
     main {
         margin-top: 5rem;
+    }
+
+    .ride-controls {
+        margin: 1rem;
     }
 </style>
