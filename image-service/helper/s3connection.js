@@ -35,8 +35,7 @@ const downloadFromS3 = async (key) => {
   }
 };
 
-const uploadToS3 = async (req) => {
-  console.log(s3_endpoint);
+const uploadToS3 = async (req, id) => {
   return new Promise((resolve, reject) => {
     let options = {
       maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
@@ -75,7 +74,7 @@ const uploadToS3 = async (req) => {
           params: {
             ACL: "public-read",
             Bucket,
-            Key: `${Date.now().toString()}-${this.originalFilename}`,
+            Key: id,
             Body: this._writeStream,
           },
           tags: [], // optional tags
