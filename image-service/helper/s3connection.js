@@ -8,9 +8,10 @@ const accessKeyId = process.env.ACCESS_KEY_ID;
 const secretAccessKey = process.env.ACCESS_KEY_SECRET;
 const Bucket = process.env.BUCKET_NAME;
 const region = process.env.REGION;
+const s3_endpoint = process.env.S3_ENDPOINT;
 
 const s3client = new S3Client({
-  endpoint: "http://127.0.0.1:9000",
+  endpoint: s3_endpoint,
   credentials: {
     accessKeyId,
     secretAccessKey,
@@ -25,8 +26,9 @@ const downloadFromS3 = async (key) => {
   };
   const command = new GetObjectCommand(input);
   try {
-    const url = getSignedUrl(s3client, command, { expiresIn: 3600 });
-    return url;
+    const image = s3client.send(command);
+    const imageToString = (await image).Body.transformToString("base64");
+    return imageToString;
   } catch (err) {
     console.error("Error fetching from S3: ", err);
     throw err;
@@ -34,6 +36,7 @@ const downloadFromS3 = async (key) => {
 };
 
 const uploadToS3 = async (req) => {
+  console.log(s3_endpoint);
   return new Promise((resolve, reject) => {
     let options = {
       maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,

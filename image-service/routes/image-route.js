@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
     })
     .catch((error) => {
       res.status(400).json({
-        message: "An error occurred.",
+        message: "An error occurred while trying to upload the image.",
         error,
       });
     });
@@ -34,7 +34,11 @@ router.get("/view/:key", async (req, res) => {
   try {
     const data = await s3connection.downloadFromS3(key);
     console.log(data);
-    res.send("<html><body><img src=" + data + " </img></body></html>");
+    res.send(
+      '<html><body><img src="data:image/png;base64,' +
+        data +
+        '" / ></body></html>'
+    );
   } catch (err) {
     res.status(500).send("Error fetching image.");
   }

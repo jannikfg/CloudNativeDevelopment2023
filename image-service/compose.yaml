@@ -1,19 +1,35 @@
 services:
   image-service:
-    container_name: image-service
+    container_name: image-servie
     build: .
     image: image-service
     ports:
       - 3000:3000
+    networks:
+      - image-network
+
   minio:
-    container_name: minio
     image: minio/minio:latest
+    container_name: minio
     ports:
       - 9000:9000
       - 9090:9090
+    networks:
+      image-network:
+        ipv4_address: 172.16.238.10
     volumes:
-      - ~/Development/cnd/minio/data:/data
+      - minio_data:/data
     environment:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
-    command: server --console-address ":9090" /data
+    entrypoint: sh
+    command: -c 'mc mb data/image-bucket && usr/bin/minio server --console-address ":9090" --address ":9000" /data'
+
+volumes:
+  minio_data:
+
+networks:
+  image-network:
+    ipam:
+      config:
+        - subnet: 172.16.238.0/24
