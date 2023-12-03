@@ -72,7 +72,7 @@
 
 <main>
     <div class="ride-controls">
-        <Button caption="New Ride" on:click={() => (editMode = "add")} />
+        <Button on:click={() => (editMode = "add")}>New Ride</Button>
     </div>
     {#if editMode === "add"}
         <EditRide on:save={addRide} />
