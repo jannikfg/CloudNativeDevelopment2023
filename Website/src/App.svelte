@@ -5,6 +5,11 @@
     import Button from "./UI/Button.svelte";
     import EditRide from "./Rides/EditRide.svelte";
 
+    import { Hamburger } from "svelte-hamburgers";
+    import Menu from "./UI/Menu.svelte";
+
+    let open;
+
     let id = "";
     let from = "";
     let to = "";
@@ -71,6 +76,9 @@
 <Header />
 
 <main>
+    <Hamburger bind:open color="white" />
+
+    <Menu bind:open />
     <div class="ride-controls">
         <Button on:click={() => (editMode = "add")}>New Ride</Button>
     </div>
