@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -3541,7 +3541,7 @@ var app = (function () {
 
     			t = space();
     			hr = element("hr");
-    			attr_dev(div, "class", "svelte-6xpyer");
+    			attr_dev(div, "class", "svelte-qu5j9h");
     			add_location(div, file$1, 8, 4, 154);
     			add_location(hr, file$1, 16, 4, 358);
     		},
@@ -3641,7 +3641,7 @@ var app = (function () {
     			p = element("p");
     			t0 = text(/*link*/ ctx[1]);
     			t1 = space();
-    			attr_dev(p, "class", "svelte-6xpyer");
+    			attr_dev(p, "class", "svelte-qu5j9h");
     			add_location(p, file$1, 10, 12, 239);
     		},
     		m: function mount(target, anchor) {
