@@ -24,7 +24,7 @@
         letter-spacing: 0.15em;
         padding: 1em;
         padding-top: 0;
-        color: #eef;
+        color: #cf0056;
     }
     p {
         cursor: pointer;
