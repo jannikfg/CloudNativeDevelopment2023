@@ -1,6 +1,7 @@
 package thi.cnd.adapter.jpa;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.Optional;
 import thi.cnd.adapter.jpa.entities.UserEntity;
 import thi.cnd.domain.model.User;
