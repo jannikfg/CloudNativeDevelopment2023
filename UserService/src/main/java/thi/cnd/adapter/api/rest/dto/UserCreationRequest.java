@@ -2,8 +2,11 @@ package thi.cnd.adapter.api.rest.dto;
 
 import java.util.Date;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserCreationRequest {
   private String firstName;
   private String lastName;

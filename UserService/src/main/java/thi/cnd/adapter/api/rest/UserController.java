@@ -12,6 +12,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import thi.cnd.adapter.api.rest.dto.LoginRequest;
 import thi.cnd.adapter.api.rest.dto.UserCreationRequest;
 import thi.cnd.adapter.api.rest.dto.UserResponse;
 import thi.cnd.domain.UserService;
@@ -42,5 +43,11 @@ public class UserController {
     User user = userService.findUser(email);
     return new UserResponse(user.getFirstName(), user.getLastName(), user.getEmail(),
         user.getPassword(), user.getBirthDate());
+  }
+
+  @POST
+  @Path("user/verify")
+  public boolean verifyUser(@RequestBody LoginRequest loginRequest){
+    return userService.verifyUser(loginRequest.getEmail(), loginRequest.getPassword());
   }
 }

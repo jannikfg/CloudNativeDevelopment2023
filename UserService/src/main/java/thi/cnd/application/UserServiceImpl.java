@@ -3,6 +3,7 @@ package thi.cnd.application;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.Date;
+import java.util.Objects;
 import thi.cnd.domain.UserService;
 import thi.cnd.domain.model.User;
 import thi.cnd.ports.outgoing.UserRepository;
@@ -23,5 +24,12 @@ public class UserServiceImpl implements UserService {
   @Override
   public User findUser(String email) {
     return userRepository.findById(email);
+  }
+
+  @Override
+  public Boolean verifyUser(String email, String password) {
+    User user = userRepository.findById(email);
+
+    return Objects.equals(user.getPassword(), password);
   }
 }
