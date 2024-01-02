@@ -6,6 +6,4 @@ import jakarta.enterprise.context.ApplicationScoped;
 import thi.cnd.adapter.jpa.entities.UserEntity;
 @ApplicationScoped
 public class JpaUserRepository implements
-    PanacheRepositoryBase<UserEntity, String> {
-
-}
+    PanacheRepositoryBase<UserEntity, String>{};
