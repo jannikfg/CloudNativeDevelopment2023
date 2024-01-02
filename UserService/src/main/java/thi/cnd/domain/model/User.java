@@ -1,21 +1,23 @@
 package thi.cnd.domain.model;
 
-import io.quarkus.arc.All;
-import jakarta.resource.spi.security.PasswordCredential;
-import java.util.Date;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class User {
+
   private String firstName;
   private String lastName;
   private String email;
   private String password;
-  private Date birthDate;
+  private LocalDate birthDate;
+
 }

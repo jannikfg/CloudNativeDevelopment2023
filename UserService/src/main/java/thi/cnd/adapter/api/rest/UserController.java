@@ -7,14 +7,15 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import thi.cnd.adapter.api.rest.dto.LoginRequest;
 import thi.cnd.adapter.api.rest.dto.UserCreationRequest;
 import thi.cnd.adapter.api.rest.dto.UserResponse;
+import thi.cnd.adapter.api.rest.dto.VerificationResponse;
 import thi.cnd.domain.UserService;
 import thi.cnd.domain.model.User;
 
@@ -28,9 +29,10 @@ public class UserController {
 
   @Inject
   UserService userService;
+
   @POST
   @Path("/create")
-  public UserResponse createUser(@RequestBody UserCreationRequest userToCreate){
+  public UserResponse createUser(@RequestBody UserCreationRequest userToCreate) {
     User user = userService.createUser(userToCreate.getFirstName(), userToCreate.getLastName(),
         userToCreate.getEmail(), userToCreate.getPassword(), userToCreate.getBirthDate());
     return new UserResponse(user.getFirstName(), user.getLastName(), user.getEmail(),
@@ -38,16 +40,17 @@ public class UserController {
   }
 
   @GET
-  @Path("user")
-  public UserResponse getUser(@QueryParam("email") String email){
+  @Path("/user/{email}")
+  public UserResponse getUser(@PathParam("email") String email) {
     User user = userService.findUser(email);
     return new UserResponse(user.getFirstName(), user.getLastName(), user.getEmail(),
         user.getPassword(), user.getBirthDate());
   }
 
   @POST
-  @Path("user/verify")
-  public boolean verifyUser(@RequestBody LoginRequest loginRequest){
-    return userService.verifyUser(loginRequest.getEmail(), loginRequest.getPassword());
+  @Path("/user/verify")
+  public VerificationResponse verifyUser(@RequestBody LoginRequest loginRequest) {
+    Boolean verified = userService.verifyUser(loginRequest.getEmail(), loginRequest.getPassword());
+    return new VerificationResponse(loginRequest.getEmail(), verified);
   }
 }
