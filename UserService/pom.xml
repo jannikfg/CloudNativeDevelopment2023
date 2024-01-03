@@ -132,6 +132,12 @@
       <groupId>io.quarkus</groupId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <artifactId>archunit-junit4</artifactId>
+      <groupId>com.tngtech.archunit</groupId>
+      <scope>test</scope>
+      <version>0.22.0</version>
+    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
