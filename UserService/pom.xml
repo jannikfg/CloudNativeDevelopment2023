@@ -138,6 +138,11 @@
       <scope>test</scope>
       <version>0.22.0</version>
     </dependency>
+    <dependency>
+      <artifactId>quarkus-test-security</artifactId>
+      <groupId>io.quarkus</groupId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
