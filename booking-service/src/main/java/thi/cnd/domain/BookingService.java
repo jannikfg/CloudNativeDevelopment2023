@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookingService {
 
-  Booking createBooking(String user, LocalDate date, String rideId);
+  Booking createBooking(String user, LocalDate date, String rideId) throws Exception;
 
   Booking findBookingById(String id);
 

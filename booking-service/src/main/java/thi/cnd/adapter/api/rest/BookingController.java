@@ -29,10 +29,14 @@ public class BookingController {
   @Path("/create")
   @Transactional
   public BookingResponse createBooking(@RequestBody BookingCreationRequest bookingCreationRequest) {
-    Booking booking = bookingService.createBooking(bookingCreationRequest.getUser(),
-        bookingCreationRequest.getDate(), bookingCreationRequest.getRideId());
-    return new BookingResponse(booking.getId().toString(), booking.getUser(), booking.getDate(),
-        RideResponse.fromEntity(booking.getRide()));
+    try {
+      Booking booking = bookingService.createBooking(bookingCreationRequest.getUser(),
+          bookingCreationRequest.getDate(), bookingCreationRequest.getRideId());
+      return new BookingResponse(booking.getId().toString(), booking.getUser(), booking.getDate(),
+          RideResponse.fromEntity(booking.getRide()));
+    } catch (Exception e) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @GET

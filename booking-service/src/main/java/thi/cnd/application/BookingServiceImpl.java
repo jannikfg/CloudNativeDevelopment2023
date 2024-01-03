@@ -21,7 +21,7 @@ public class BookingServiceImpl implements BookingService {
   RideRepository rideRepository;
 
   @Override
-  public Booking createBooking(String user, LocalDate date, String rideId) {
+  public Booking createBooking(String user, LocalDate date, String rideId) throws Exception {
     Ride ride = rideRepository.findById(rideId);
     List<Booking> bookingsByRideId = bookingRepository.findBookingsByRideId(rideId);
     if (bookingsByRideId.size() < ride.getCapacity()) {
@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
       bookingRepository.save(booking);
       return booking;
     } else {
-      return null; // TODO: Logik hierfür implementieren
+      throw new Exception("Ride has no capacity"); // TODO: Logik hierfür implementieren
     }
   }
 
