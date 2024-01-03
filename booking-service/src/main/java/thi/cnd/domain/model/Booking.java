@@ -1,20 +1,23 @@
 package thi.cnd.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
 public class Booking {
 
+  @Setter(AccessLevel.NONE)
+  private UUID id;
   private String user;
   private LocalDate date;
   private Ride ride;
+
+  public Booking() {
+    this.id = UUID.randomUUID();
+  }
 
 }

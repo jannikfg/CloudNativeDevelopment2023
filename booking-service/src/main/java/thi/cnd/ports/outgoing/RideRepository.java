@@ -11,5 +11,9 @@ public interface RideRepository {
 
   List<Ride> findAll();
 
-  List<Ride> findByDriver(String driver);
+  List<Ride> findRidesByDriver(String driver);
+
+  List<Ride> findRidesByOrigin(String origin);
+
+  List<Ride> findRidesByDestination(String destination);
 }

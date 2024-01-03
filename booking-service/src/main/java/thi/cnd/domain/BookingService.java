@@ -1,5 +1,18 @@
 package thi.cnd.domain;
 
-public class BookingService {
+import thi.cnd.domain.model.Booking;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public interface BookingService {
+
+  Booking createBooking(String user, LocalDate date, String rideId);
+
+  Booking findBookingById(String id);
+
+  List<Booking> findBookingByUser(String user);
+
+  List<Booking> findAll();
 
 }

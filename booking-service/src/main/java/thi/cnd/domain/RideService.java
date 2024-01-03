@@ -17,4 +17,8 @@ public interface RideService {
 
   List<Ride> findRidesByDriver(String driver);
 
+  List<Ride> findRidesByOrigin(String origin);
+
+  List<Ride> findRidesByDestination(String destination);
+
 }

@@ -1,5 +1,9 @@
 package thi.cnd.adapter.jpa;
 
-public class JpaBookingRepository {
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
+import thi.cnd.adapter.jpa.entities.BookingEntity;
 
+@ApplicationScoped
+public class JpaBookingRepository implements PanacheRepositoryBase<BookingEntity, String> {
 }

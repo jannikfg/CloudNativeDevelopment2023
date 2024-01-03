@@ -43,6 +43,16 @@ public class RideServiceImpl implements RideService {
 
   @Override
   public List<Ride> findRidesByDriver(String driver) {
-    return rideRepository.findByDriver(driver);
+    return rideRepository.findRidesByDriver(driver);
+  }
+
+  @Override
+  public List<Ride> findRidesByOrigin(String origin) {
+    return rideRepository.findRidesByOrigin(origin);
+  }
+
+  @Override
+  public List<Ride> findRidesByDestination(String destination) {
+    return rideRepository.findRidesByDestination(destination);
   }
 }

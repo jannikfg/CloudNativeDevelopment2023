@@ -53,10 +53,24 @@ public class RideController {
   }
 
   @GET
-  @Path("/{driver}/all")
+  @Path("/driver/{driver}")
   public List<RideResponse> getRidesByDriver(@PathParam("driver") String driver) {
     List<Ride> ridesByDriver = rideService.findRidesByDriver(driver);
     return ridesByDriver.stream().map(RideResponse::fromEntity).toList();
+  }
+
+  @GET
+  @Path("/origin/{origin}")
+  public List<RideResponse> getRidesByOrigin(@PathParam("origin") String origin) {
+    List<Ride> ridesByOrigin = rideService.findRidesByOrigin(origin);
+    return ridesByOrigin.stream().map(RideResponse::fromEntity).toList();
+  }
+
+  @GET
+  @Path("/destination/{destination}")
+  public List<RideResponse> getRidesByDestination(@PathParam("destination") String destination) {
+    List<Ride> ridesByDestination = rideService.findRidesByDestination(destination);
+    return ridesByDestination.stream().map(RideResponse::fromEntity).toList();
   }
 
 }

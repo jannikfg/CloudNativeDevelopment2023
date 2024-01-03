@@ -41,10 +41,25 @@ public class JpaRideRepositoryImpl implements RideRepository {
   }
 
   @Override
-  public List<Ride> findByDriver(String driver) {
+  public List<Ride> findRidesByDriver(String driver) {
     List<RideEntity> rideEntities = jpaRideRepository.listAll();
     return rideEntities.stream().filter(rideEntity -> driver.equals(rideEntity.getDriver()))
         .toList().stream().map(RideEntity::toRide).toList();
+  }
+
+  @Override
+  public List<Ride> findRidesByOrigin(String origin) {
+    List<RideEntity> rideEntities = jpaRideRepository.listAll();
+    return rideEntities.stream().filter(rideEntity -> origin.equals(rideEntity.getOrigin()))
+        .toList().stream().map(RideEntity::toRide).toList();
+  }
+
+  @Override
+  public List<Ride> findRidesByDestination(String destination) {
+    List<RideEntity> rideEntities = jpaRideRepository.listAll();
+    return rideEntities.stream()
+        .filter(rideEntity -> destination.equals(rideEntity.getDestination())).toList().stream()
+        .map(RideEntity::toRide).toList();
   }
 
 }
