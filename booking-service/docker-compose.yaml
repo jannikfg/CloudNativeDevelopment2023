@@ -1,0 +1,19 @@
+services:
+  postgres-bookingservice:
+    image: postgres:15.0
+    container_name: postgres-bookingservice
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bookingservice
+  bookingservice:
+    image: bookingservice
+    container_name: bookingservice
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres-bookingservice

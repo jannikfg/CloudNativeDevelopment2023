@@ -1,0 +1,6 @@
+version: "3.9"
+
+include:
+  - ./image-service/compose.yaml
+  - ./booking-service/compose.yaml
+  - ./UserService/docker-compose.yml

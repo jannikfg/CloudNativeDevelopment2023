@@ -1,2 +1,8 @@
 # Drawio backup files
 **/.$*.drawio.bkp
+
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
