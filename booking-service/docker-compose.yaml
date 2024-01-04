@@ -8,6 +8,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=bookingservice
+    networks:
+      - rede-rede-network
   bookingservice:
     image: bookingservice
     container_name: bookingservice
@@ -17,3 +19,5 @@ services:
       - 8080:8080
     depends_on:
       - postgres-bookingservice
+    networks:
+      - rede-rede-network

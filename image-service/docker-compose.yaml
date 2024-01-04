@@ -6,6 +6,7 @@ services:
     ports:
       - 3000:3000
     networks:
+      - rede-rede-network
       - image-network
 
   minio:
@@ -27,9 +28,3 @@ services:
 
 volumes:
   minio_data:
-
-networks:
-  image-network:
-    ipam:
-      config:
-        - subnet: 172.16.238.0/24
