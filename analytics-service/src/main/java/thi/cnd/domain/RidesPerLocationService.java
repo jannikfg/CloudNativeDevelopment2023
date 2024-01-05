@@ -9,4 +9,6 @@ public interface RidesPerLocationService {
 
   List<RidesPerLocation> getAllRidesPerLocation();
 
+void saveRidesPerLocation(RidesPerLocation ridesPerLocation);
+
 }

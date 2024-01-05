@@ -1,11 +1,25 @@
 version: '3.9'
 
 services:
-  postgres-userservice:
+  postgres-analyticsservice:
     image: postgres:15.0
+    container_name: postgres-analyticsservice
     ports:
       - 5434:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=analyticsservice
+    networks:
+      - rede-rede-network
+  analyticsservice:
+    image: analyticsservice
+    container_name: analyticsservice
+    build:
+      context: .
+    ports:
+      - 8082:8080
+    depends_on:
+      - postgres-analyticsservice
+    networks:
+      - rede-rede-network

@@ -11,6 +11,8 @@ public interface RidesPerDayService {
 
   List<RidesPerDay> getAllRidesPerDay();
 
+void saveRidesPerDay(RidesPerDay ridesPerDay);
+
 
 }
 

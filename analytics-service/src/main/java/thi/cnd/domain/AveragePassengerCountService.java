@@ -9,4 +9,6 @@ public interface AveragePassengerCountService {
 
   List<AveragePassengerCount> getAllAveragePassengerCounts();
 
+void saveAveragePassengerCount(AveragePassengerCount averagePassengerCount);
+
 }
