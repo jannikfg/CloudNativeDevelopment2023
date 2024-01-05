@@ -6,6 +6,20 @@ include:
   - ./UserService/docker-compose.yml
 
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - imageservice-1
+      - imageservice-2
+      - bookingservice
+      - userservice
+    networks:
+      - rede-rede-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:

@@ -3,6 +3,7 @@ const router = express.Router();
 const s3connection = require("../helper/s3connection");
 
 router.post("/:id", async (req, res) => {
+  console.log("request body received");
   const { id } = req.params;
   await s3connection
     .uploadToS3(req, id)
