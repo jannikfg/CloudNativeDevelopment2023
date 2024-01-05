@@ -3,7 +3,8 @@ version: "3.9"
 include:
   - ./image-service/docker-compose.yaml
   - ./booking-service/docker-compose.yaml
-  - ./UserService/docker-compose.yml
+  - ./user-service/docker-compose.yml
+  - ./analytics-service/docker-compose.yml
 
 services:
   nginx:
@@ -17,6 +18,7 @@ services:
       - imageservice-2
       - bookingservice
       - userservice
+      - analyticsservice
     networks:
       - rede-rede-network
 
