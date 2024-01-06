@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import thi.cnd.domain.RideService;
 import thi.cnd.domain.model.Ride;
+import thi.cnd.ports.outgoing.RideEvents;
 import thi.cnd.ports.outgoing.RideRepository;
 
 import java.time.LocalDate;
@@ -15,6 +16,9 @@ public class RideServiceImpl implements RideService {
 
   @Inject
   RideRepository rideRepository;
+
+  @Inject
+  RideEvents rideEvents;
 
   @Override
   public Ride createRide(String origin, String destination, LocalDate date, LocalTime time,
@@ -28,6 +32,7 @@ public class RideServiceImpl implements RideService {
     ride.setDescription(description);
     ride.setCapacity(capacity);
     rideRepository.save(ride);
+    rideEvents.publishRideCreatedEvent(ride);
     return ride;
   }
 
