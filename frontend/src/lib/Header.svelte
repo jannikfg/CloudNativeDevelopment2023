@@ -3,6 +3,8 @@
 	<nav>
 		<div><a href="/rides">Rides</a></div>
 		<div><a href="/user">User</a></div>
+		<div><a href="/login">Login</a></div>
+		<div><a href="/register">Register</a></div>
 	</nav>
 </header>
 
