@@ -1,0 +1,40 @@
+services:
+  imageservice-1:
+    container_name: imageservice-1
+    build: .
+    image: imageservice
+    ports:
+      - 3000:3000
+    networks:
+      - rede-rede-network
+      - image-network
+  imageservice-2:
+    container_name: imageservice-2
+    image: imageservice
+    ports:
+      - 3001:3000
+    networks:
+      - rede-rede-network
+      - image-network
+    depends_on:
+      - imageservice-1
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - 9000:9000
+      - 9090:9090
+    networks:
+      image-network:
+        ipv4_address: 172.16.238.10
+    volumes:
+      - minio_data:/data
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    entrypoint: sh
+    command: -c 'mc mb data/image-bucket && usr/bin/minio server --console-address ":9090" --address ":9000" /data'
+
+volumes:
+  minio_data:
