@@ -61,37 +61,37 @@ jobs:
         run: docker build . -t imageservice:latest
       - name: Tag image imageservice
         run: |
-          docker tag imageservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/imageservice:latest
+          docker tag imageservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/imageservice:latest
       - name: Push image imageservice
         run: |
-          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/imageservice:latest
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/imageservice:latest
         
       - name: Build image bookingservice
         working-directory: ./booking-service
         run: docker build . -t bookingservice:latest
       - name: Tag image bookingservice
         run: |
-          docker tag bookingservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/bookingservice:latest
+          docker tag bookingservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/bookingservice:latest
       - name: Push image bookingservice
         run: |
-          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/bookingservice:latest
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/bookingservice:latest
         
       - name: Build image userservice
         working-directory: ./user-service
         run: docker build . -t userservice:latest
       - name: Tag image userservice
         run: |
-          docker tag userservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/userservice:latest
+          docker tag userservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/userservice:latest
       - name: Push image userservice
         run: |
-          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/userservice:latest
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/userservice:latest
         
       - name: Build image analyticsservice
         working-directory: ./analytics-service
         run: docker build . -t analyticsservice:latest
       - name: Tag image analyticsservice
         run: |
-          docker tag analyticsservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/analyticsservice:latest
+          docker tag analyticsservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/analyticsservice:latest
       - name: Push image analyticsservice
         run: |
-          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/analyticsservice:latest
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/analyticsservice:latest
