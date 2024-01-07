@@ -41,6 +41,21 @@ jobs:
       #    push: true
       #    tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/cnd-demo/imageservice:latest
 
+      - name: Setup Java Test Environment
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Test bookingservice
+        working-directory: ./booking-service
+        run: mvn test
+      - name: Test userservice
+        working-directory: ./user-service
+        run: mvn test
+      - name: Test analyticsservice
+        working-directory: ./analytics-service
+        run: mvn test
+      
       - name: Build image imageservice
         working-directory: ./image-service
         run: docker build . -t imageservice:latest
@@ -50,7 +65,7 @@ jobs:
       - name: Push image imageservice
         run: |
           docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/imageservice:latest
-
+        
       - name: Build image bookingservice
         working-directory: ./booking-service
         run: docker build . -t bookingservice:latest
@@ -60,7 +75,7 @@ jobs:
       - name: Push image bookingservice
         run: |
           docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/bookingservice:latest
-
+        
       - name: Build image userservice
         working-directory: ./user-service
         run: docker build . -t userservice:latest
@@ -70,7 +85,7 @@ jobs:
       - name: Push image userservice
         run: |
           docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/CloudNativeDevelopment2023/userservice:latest
-
+        
       - name: Build image analyticsservice
         working-directory: ./analytics-service
         run: docker build . -t analyticsservice:latest
