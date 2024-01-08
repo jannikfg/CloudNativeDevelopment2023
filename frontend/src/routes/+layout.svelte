@@ -1,5 +1,4 @@
 <script>
-	import Header from '$lib/Header.svelte';
 	import { navigating } from '$app/stores';
 	import Nav from './Nav.svelte';
 	import PreloadingIndicator from './PreloadingIndicator.svelte';

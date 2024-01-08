@@ -1,17 +1,13 @@
 import { error } from '@sveltejs/kit';
 
-const baseUsers = 'https://api.realworld.io/api';
-const baseRides = 'http://bookingservice/api/v1/rides'
-const baseBookings = 'http://bookingservice/api/v1/bookings'
-const baseAnalytics = 'http://analyticsservice/api/v1/analytics'
-
 async function send({ method, base, path, data }) {
     const opts = { method, headers: {} };
 
     if (data) {
         opts.headers['Content-Type'] = 'application/json';
-        opts.body = JSON.stringify(data);
+        opts.body = JSON.stringify(data.requestBody);
     }
+    console.log("Logging in API.js" + opts.body);
 
     const res = await fetch(`${base}/${path}`, opts);
     if (res.ok || res.status === 422) {
@@ -24,17 +20,19 @@ async function send({ method, base, path, data }) {
 }
 
 export function get(base, path) {
+    // @ts-ignore
     return send({ method: 'GET', base, path });
 }
 
-export function del(path, token) {
-    return send({ method: 'DELETE', path, token });
+export function del(base, path) {
+    // @ts-ignore
+    return send({ method: 'DELETE', base, path });
 }
 
-export function post(path, data, token) {
-    return send({ method: 'POST', path, data, token });
+export function post(base, path, data,) {
+    return send({ method: 'POST', base, path, data });
 }
 
-export function put(path, data, token) {
-    return send({ method: 'PUT', path, data, token });
+export function put(base, path, data) {
+    return send({ method: 'PUT', base, path, data });
 }

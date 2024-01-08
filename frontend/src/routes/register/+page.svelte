@@ -64,7 +64,6 @@
 		display: flex;
 		justify-content: center; /* Alle Inhalte in der Mitte ausrichten */
 		align-items: center;
-		height: 100vh; /* Volle Bildschirmhöhe verwenden */
 	}
 
 	.auth-page {
@@ -74,6 +73,7 @@
 	h1 {
 		font-weight: bold;
 		color: #cf0056; /* Überschrift-Farbe */
+		font-size: 2em;
 	}
 
 	a {
@@ -82,12 +82,14 @@
 	}
 
 	.form-control {
-		margin-bottom: 15px;
+		margin-bottom: 20px;
+		font-size: 1.1em;
 	}
 
 	.btn-primary {
 		background-color: #cf0056; /* Button-Hintergrundfarbe */
 		border-color: #cf0056; /* Button-Rahmenfarbe */
+		font-size: 1.1em;
 	}
 
 	.btn-primary:hover {

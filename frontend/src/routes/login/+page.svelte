@@ -55,7 +55,6 @@
 		display: flex;
 		justify-content: center; /* Alle Inhalte in der Mitte ausrichten */
 		align-items: center;
-		height: 100vh; /* Volle Bildschirmhöhe verwenden */
 	}
 
 	.auth-page {
