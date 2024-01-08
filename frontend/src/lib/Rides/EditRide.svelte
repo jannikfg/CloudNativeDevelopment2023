@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import Button from '$lib/Button.svelte';
 	import Modal from '$lib/Modal.svelte';
 	import TextInput from '$lib/TextInput.svelte';

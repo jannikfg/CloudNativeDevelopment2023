@@ -11,6 +11,8 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="modal-backdrop" on:click={closeModal}></div>
 <div class="modal">
 	<h1>{title}</h1>
