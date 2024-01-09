@@ -13,39 +13,39 @@
 				<a class="nav-link" class:active={$page.url.pathname === '/'} href="/">Home</a>
 			</li>
 
-			{#if user !== undefined}
-				<li class="nav-item">
-					<a href="/bookings" class="nav-link" class:active={$page.url.pathname === '/bookings'}>
-						<i class="ion-compose" />&nbsp;Buchungen
-					</a>
-				</li>
+			<!-- {#if user !== undefined} -->
+			<li class="nav-item">
+				<a href="/bookings" class="nav-link" class:active={$page.url.pathname === '/bookings'}>
+					<i class="ion-compose" />&nbsp;Buchungen
+				</a>
+			</li>
 
-				<li class="nav-item">
-					<a
-						href="/plannedRides"
-						class="nav-link"
-						class:active={$page.url.pathname === '/plannedRides'}
-					>
-						<i class="ion-gear-a" />&nbsp;Geplante Fahrten
-					</a>
-				</li>
+			<li class="nav-item">
+				<a
+					href="/plannedRides"
+					class="nav-link"
+					class:active={$page.url.pathname === '/plannedRides'}
+				>
+					<i class="ion-gear-a" />&nbsp;Geplante Fahrten
+				</a>
+			</li>
 
-				<li class="nav-item">
-					<a href="/user}" class="nav-link"> {user.firstName}</a>
-				</li>
-			{:else}
-				<li class="nav-item">
-					<a href="/login" class="nav-link" class:active={$page.url.pathname === '/login'}>
-						Sign in
-					</a>
-				</li>
+			<li class="nav-item">
+				<a href="/user}" class="nav-link"> Jannik</a>
+			</li>
+			<!-- {:else} -->
+			<li class="nav-item">
+				<a href="/login" class="nav-link" class:active={$page.url.pathname === '/login'}>
+					Sign in
+				</a>
+			</li>
 
-				<li class="nav-item">
-					<a href="/register" class="nav-link" class:active={$page.url.pathname === '/register'}>
-						Sign up
-					</a>
-				</li>
-			{/if}
+			<li class="nav-item">
+				<a href="/register" class="nav-link" class:active={$page.url.pathname === '/register'}>
+					Sign up
+				</a>
+			</li>
+			<!-- {/if} -->
 		</ul>
 	</div>
 </nav>

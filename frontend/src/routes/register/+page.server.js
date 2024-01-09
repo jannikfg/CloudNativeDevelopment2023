@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import * as api from '$lib/api.js';
-import { PUBLIC_USERSERVICE_URL } from '$env/static/public';
 
+const PUBLIC_USERSERVICE_URL = 'http://localhost:80/users/api/v1/users';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ parent }) {
 	const { user } = await parent();

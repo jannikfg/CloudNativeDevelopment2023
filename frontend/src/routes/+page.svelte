@@ -19,25 +19,6 @@
 	let email = '';
 	let description = '';
 
-	onMount(async () => {
-		rides = await loadAllRides();
-	});
-
-	async function loadAllRides() {
-		const url = '/api/rides';
-		try {
-			const response = await fetch(url, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			return await response.json();
-		} catch (err) {
-			console.log(err);
-		}
-	}
-
 	let editMode: 'add' | null = null;
 
 	function addRide(

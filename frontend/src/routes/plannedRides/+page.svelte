@@ -4,20 +4,23 @@
 	import RideGrid from '$lib/Rides/RideGrid.svelte';
 	import { onMount } from 'svelte';
 	import * as api from '$lib/api';
-	import { PUBLIC_RIDESERVICE_URL } from '$env/static/public';
+
+	const PUBLIC_RIDESERVICE_URL = 'http://localhost:80/bookings/api/v1/rides';
 
 	let editMode = null;
 
 	let rides = [];
 
-	let email = '';
+	let email = 'test@test.de';
 
 	onMount(async () => {
 		rides = await loadAllCustomRides(email);
 	});
 
 	async function loadAllRides() {
-		return api.get(PUBLIC_RIDESERVICE_URL, 'all');
+		let response = api.get(PUBLIC_RIDESERVICE_URL, 'all');
+		console.log(response);
+		return response;
 	}
 
 	function filterRides(rides, email) {

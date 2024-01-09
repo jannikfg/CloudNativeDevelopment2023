@@ -5,10 +5,11 @@ async function send({ method, base, path, data }) {
 
     if (data) {
         opts.headers['Content-Type'] = 'application/json';
-        opts.headers['mode'] = 'no-cors';
         opts.body = JSON.stringify(data.requestBody);
     }
-    console.log("Logging in API.js" + opts.body);
+    console.log("Logging in API.js" + opts.method);
+
+    console.log('Logging in API.js:' + base + '/' + path);
 
     const res = await fetch(`${base}/${path}`, opts);
     if (res.ok || res.status === 422) {

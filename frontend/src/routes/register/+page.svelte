@@ -1,6 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { userStore } from '$lib/stores/user-store.js';
+	import { userStore } from '$lib/stores/user-store.ts';
 
 	export let form;
 </script>
