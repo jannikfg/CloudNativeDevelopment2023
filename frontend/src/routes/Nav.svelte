@@ -1,5 +1,8 @@
 <script>
 	import { page } from '$app/stores';
+	import { userStore } from '$lib/stores/user-store';
+
+	let user = $userStore;
 </script>
 
 <nav class="navbar navbar-light">
@@ -10,7 +13,7 @@
 				<a class="nav-link" class:active={$page.url.pathname === '/'} href="/">Home</a>
 			</li>
 
-			{#if $page.data.user}
+			{#if user !== undefined}
 				<li class="nav-item">
 					<a href="/bookings" class="nav-link" class:active={$page.url.pathname === '/bookings'}>
 						<i class="ion-compose" />&nbsp;Buchungen
@@ -28,9 +31,7 @@
 				</li>
 
 				<li class="nav-item">
-					<a href="/user/@{$page.data.user.username}" class="nav-link">
-						{$page.data.user.username}
-					</a>
+					<a href="/user}" class="nav-link"> {user.firstName}</a>
 				</li>
 			{:else}
 				<li class="nav-item">

@@ -1,8 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/Button.svelte';
-	import Header from '$lib/Header.svelte';
 	import EditRide from '$lib/Rides/EditRide.svelte';
 	import RideGrid from '$lib/Rides/RideGrid.svelte';
+	import { onMount } from 'svelte';
+	import * as api from '$lib/api';
+	import { PUBLIC_RIDESERVICE_URL } from '$env/static/public';
+
+	let rides: object[] = [];
 
 	let open: boolean;
 
@@ -15,30 +19,24 @@
 	let email = '';
 	let description = '';
 
-	let rides = [
-		{
-			id: 'r1',
-			from: 'Ingolstadt',
-			to: 'Mailing',
-			date: '05.11.2023',
-			time: '15:00',
-			driver: 'Jannik Füllgraf',
-			email: 'jannik@test.de',
-			description: 'Dies ist eine Beschreibung der Reise',
-			isFavorite: false
-		},
-		{
-			id: 'r2',
-			from: 'Mailing',
-			to: 'Ingolstadt',
-			date: '05.11.2023',
-			time: '17:00',
-			driver: 'Manuel Wittmann',
-			email: 'manuel@test.de',
-			description: 'Dies ist eine Beschreibung der Reise',
-			isFavorite: false
+	onMount(async () => {
+		rides = await loadAllRides();
+	});
+
+	async function loadAllRides() {
+		const url = '/api/rides';
+		try {
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			return await response.json();
+		} catch (err) {
+			console.log(err);
 		}
-	];
+	}
 
 	let editMode: 'add' | null = null;
 
@@ -65,17 +63,17 @@
 			description: event.detail.description,
 			isFavorite: event.detail.isFavorite
 		};
-
-		rides = [...rides, newRide];
 		editMode = null;
 	}
 
+	/*
 	function togglefavorite(event: CustomEvent<string>) {
 		const id = event.detail;
 		const rideIndex = rides.findIndex((m) => m.id === id);
 		rides[rideIndex].isFavorite = !rides[rideIndex].isFavorite;
 		rides = rides;
 	}
+	*/
 </script>
 
 <main>
@@ -85,7 +83,9 @@
 	{#if editMode === 'add'}
 		<EditRide on:save={addRide} />
 	{/if}
-	<RideGrid {rides} on:togglefavorite={togglefavorite} />
+
+	<RideGrid {rides} />
+	<!--<RideGrid {rides} on:togglefavorite={togglefavorite} /> -->
 </main>
 
 <style>

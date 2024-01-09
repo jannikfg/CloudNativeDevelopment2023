@@ -5,6 +5,7 @@ async function send({ method, base, path, data }) {
 
     if (data) {
         opts.headers['Content-Type'] = 'application/json';
+        opts.headers['mode'] = 'no-cors';
         opts.body = JSON.stringify(data.requestBody);
     }
     console.log("Logging in API.js" + opts.body);

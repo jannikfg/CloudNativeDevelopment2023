@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import * as api from '$lib/api.js';
-import { USERSERVICE_URL } from '$env/static/private';
+import { PUBLIC_USERSERVICE_URL } from '$env/static/public';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ parent }) {
@@ -24,7 +24,7 @@ export const actions = {
 		};
 
 		const requestBody = user;
-		const body = await api.post(USERSERVICE_URL, 'create', { requestBody });
+		const body = await api.post(PUBLIC_USERSERVICE_URL, 'create', { requestBody });
 
 		if (body.errors) {
 			return fail(401, body);
