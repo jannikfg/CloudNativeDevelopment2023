@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
+const cors = require("cors");
+
+app.use(cors());
 
 app.set("json spaces", 5); // to prettify json response
 
