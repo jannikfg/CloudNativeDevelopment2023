@@ -7,8 +7,8 @@
 	import { createEventDispatcher } from 'svelte';
 
 	let id = '';
-	let from = '';
-	let to = '';
+	let origin = '';
+	let destination = '';
 	let date = '';
 	let time = '';
 	let driver = '';
@@ -19,8 +19,8 @@
 
 	function submitForm() {
 		dispatch('save', {
-			from: from,
-			to: to,
+			origin: origin,
+			destination: destination,
 			date: date,
 			time: time,
 			driver: driver,
@@ -37,19 +37,19 @@
 <Modal title="Edit Ride Data" on:cancel>
 	<form on:submit|preventDefault={submitForm}>
 		<TextInput
-			id="from"
-			label="From"
-			value={from}
+			id="origin"
+			label="Origin"
+			value={origin}
 			type="text"
-			on:input={(event) => (from = event.target.value)}
+			on:input={(event) => (origin = event.target.value)}
 		/>
 
 		<TextInput
-			id="to"
-			label="To"
-			value={to}
+			id="destination"
+			label="Destination"
+			value={destination}
 			type="text"
-			on:input={(event) => (to = event.target.value)}
+			on:input={(event) => (destination = event.target.value)}
 		/>
 
 		<TextInput

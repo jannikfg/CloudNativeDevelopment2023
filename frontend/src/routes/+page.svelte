@@ -47,6 +47,14 @@
 		editMode = null;
 	}
 
+	onMount(async () => {
+		rides = await loadAllRides();
+	});
+
+	async function loadAllRides() {
+		return api.get(PUBLIC_RIDESERVICE_URL, 'all');
+	}
+
 	/*
 	function togglefavorite(event: CustomEvent<string>) {
 		const id = event.detail;
@@ -58,15 +66,11 @@
 </script>
 
 <main>
-	<div class="ride-controls">
-		<Button on:click={() => (editMode = 'add')}>New Ride</Button>
+	<div>
+		<h3>Eigene Fahrten kannst du unter "Geplante Fahrten" hinzufügen, wenn du eingeloggt bist</h3>
 	</div>
-	{#if editMode === 'add'}
-		<EditRide on:save={addRide} />
-	{/if}
 
 	<RideGrid {rides} />
-	<!--<RideGrid {rides} on:togglefavorite={togglefavorite} /> -->
 </main>
 
 <style>
