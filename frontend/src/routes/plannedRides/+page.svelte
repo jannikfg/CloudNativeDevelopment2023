@@ -4,6 +4,7 @@
 	import RideGrid from '$lib/Rides/RideGrid.svelte';
 	import { onMount } from 'svelte';
 	import * as api from '$lib/api';
+	import { user } from '$lib/stores/user-store';
 
 	const PUBLIC_RIDESERVICE_URL = 'http://localhost:80/bookings/api/v1/rides';
 

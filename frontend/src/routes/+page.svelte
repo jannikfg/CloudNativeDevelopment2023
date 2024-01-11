@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import * as api from '$lib/api';
 	import { PUBLIC_RIDESERVICE_URL } from '$env/static/public';
+	import { user } from '$lib/stores/user-store';
 
 	let rides: object[] = [];
 
@@ -49,6 +50,7 @@
 
 	onMount(async () => {
 		rides = await loadAllRides();
+		console.log($user.verified);
 	});
 
 	async function loadAllRides() {

@@ -7,7 +7,7 @@ async function send({ method, base, path, data }) {
         opts.headers['Content-Type'] = 'application/json';
         opts.body = JSON.stringify(data.requestBody);
     }
-    console.log("Logging in API.js" + opts.method);
+    console.log("Logging in API.js" + opts.body);
 
     console.log('Logging in API.js:' + base + '/' + path);
 

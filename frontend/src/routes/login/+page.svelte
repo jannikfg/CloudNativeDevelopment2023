@@ -1,7 +1,59 @@
 <script>
-	import { enhance } from '$app/forms';
+	import { PUBLIC_USERSERVICE_URL } from '$env/static/public';
+	import { user } from '$lib/stores/user-store.ts';
+	import { goto } from '$app/navigation';
 
 	export let form;
+	let email = '';
+	let password = '';
+	console.log(form);
+
+	async function send({ method, base, path, data }) {
+		const opts = { method, headers: {} };
+
+		if (data) {
+			opts.headers['Content-Type'] = 'application/json';
+			opts.body = JSON.stringify(data);
+		}
+		console.log('Logging in API.js' + opts.body);
+
+		console.log('Logging in API.js:' + base + '/' + path);
+
+		const res = await fetch(`${base}/${path}`, opts);
+		if (res.ok || res.status === 422) {
+			const text = await res.text();
+			return text ? JSON.parse(text) : {};
+		}
+
+		// @ts-ignore
+		throw error(res.status);
+	}
+
+	async function sendVerification() {
+		const requestBody = {
+			email: email,
+			password: password
+		};
+		console.log(requestBody);
+		return send({
+			method: 'POST',
+			base: PUBLIC_USERSERVICE_URL,
+			path: 'user/verify',
+			data: requestBody
+		});
+	}
+
+	async function verifyUser() {
+		let response = await sendVerification();
+		console.log(response);
+		if (response.verified) {
+			console.log($user.verified);
+			goto('/plannedRides');
+			$user.verified = true;
+		} else {
+			alert('Wrong email or password');
+		}
+	}
 </script>
 
 <svelte:head>
@@ -16,12 +68,13 @@
 				<p class="text-xs-center">
 					<a href="/register">Need an account?</a>
 				</p>
-				<form use:enhance method="POST">
+				<form on:submit|preventDefault={verifyUser}>
 					<fieldset class="form-group">
 						<input
 							class="form-control form-control-lg"
 							name="email"
 							type="email"
+							bind:value={email}
 							required
 							placeholder="Email"
 						/>
@@ -31,6 +84,7 @@
 							class="form-control form-control-lg"
 							name="password"
 							type="password"
+							bind:value={password}
 							required
 							placeholder="Password"
 						/>

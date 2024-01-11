@@ -77,14 +77,6 @@
 		/>
 
 		<TextInput
-			id="email"
-			label="Email"
-			value={email}
-			type="text"
-			on:input={(event) => (email = event.target.value)}
-		/>
-
-		<TextInput
 			id="description"
 			label="Description"
 			value={description}
