@@ -7,7 +7,6 @@
   import { enhance } from '$app/forms';
 
   let user = null;
-  let fileinput;
 
   onMount(async () => {
     user = await loadUser();
@@ -16,6 +15,7 @@
   });
 
   function loadUser() {
+    // TODO: Get user from session
     return api.get(PUBLIC_USERSERVICE_URL, 'user/mw@test.de');
   }
 
@@ -41,7 +41,7 @@
 </svelte:head>
 
 <div class="profile">
-  <img class="profile_avatar" src={image} alt="Profile picture of" />
+  <img class="profile_avatar" src={image} alt="user" />
   <form
     method="post"
     use:enhance={() => {
