@@ -2,6 +2,7 @@
 	import { PUBLIC_USERSERVICE_URL } from '$env/static/public';
 	import { user } from '$lib/stores/user-store.ts';
 	import { goto } from '$app/navigation';
+	import * as api from '$lib/api';
 
 	export let form;
 	let email = '';
@@ -43,14 +44,19 @@
 		});
 	}
 
+	function loadUser() {
+		let path = 'user/' + $user.email;
+		return api.get(PUBLIC_USERSERVICE_URL, path);
+	}
+
 	async function verifyUser() {
 		let response = await sendVerification();
 		console.log(response);
 		if (response.verified) {
-			console.log($user.verified);
 			$user.verified = true;
 			$user.email = email;
-			$user.firstName = response.firstName;
+			let userObject = await loadUser();
+			$user.firstName = userObject.firstName;
 			goto('/plannedRides');
 		} else {
 			alert('Wrong email or password');

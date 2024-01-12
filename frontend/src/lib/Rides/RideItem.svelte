@@ -2,6 +2,11 @@
 	import Badge from '$lib/Badge.svelte';
 	import Button from '$lib/Button.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { page } from '$app/stores';
+	import { user } from '$lib/stores/user-store.ts';
+	import * as api from '$lib/api';
+	import { PUBLIC_BOOKINGSERVICE_URL } from '$env/static/public';
+	import { goto } from '$app/navigation';
 
 	export let id;
 	export let origin;
@@ -14,6 +19,38 @@
 	export let isFav;
 
 	const dispatch = createEventDispatcher();
+
+	async function bookRide() {
+		let requestBody = {
+			user: $user.email,
+			date: '2023-10-01',
+			rideId: id
+		};
+		console.log(requestBody);
+
+		send({ method: 'POST', base: PUBLIC_BOOKINGSERVICE_URL, path: 'create', data: requestBody });
+		goto('/bookings');
+	}
+	async function send({ method, base, path, data }) {
+		const opts = { method, headers: {} };
+
+		if (data) {
+			opts.headers['Content-Type'] = 'application/json';
+			opts.body = JSON.stringify(data);
+		}
+		console.log('Logging in API.js' + opts.body);
+
+		console.log('Logging in API.js:' + base + '/' + path);
+
+		const res = await fetch(`${base}/${path}`, opts);
+		if (res.ok || res.status === 422) {
+			const text = await res.text();
+			return text ? JSON.parse(text) : {};
+		}
+
+		// @ts-ignore
+		throw error(res.status);
+	}
 </script>
 
 <article>
@@ -30,16 +67,10 @@
 		<p>{description}</p>
 	</div>
 	<footer>
-		<Button href="mailto:{email}">Contact</Button>
-		<Button
-			mode="outline"
-			color={isFav ? null : 'success'}
-			type="button"
-			on:click={() => dispatch('togglefavorite', id)}
-		>
-			{isFav ? 'Unfavorite' : 'Favorite'}
-		</Button>
-		<Button type="button">Show Details</Button>
+		{#if $page.url.pathname !== '/plannedRides'}
+			<Button href="mailto:{email}">Contact</Button>
+			<Button type="button" on:click={bookRide}>Book Ride</Button>
+		{/if}
 	</footer>
 </article>
 
