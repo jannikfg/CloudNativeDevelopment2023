@@ -4,8 +4,8 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let id;
-	export let from;
-	export let to;
+	export let origin;
+	export let destination;
 	export let date;
 	export let time;
 	export let driver;
@@ -19,7 +19,7 @@
 <article>
 	<header>
 		<h1>
-			{from} - {to} / {date} / {time}
+			{origin} - {destination} / {date} / {time}
 			{#if isFav}
 				<Badge>Favorite</Badge>
 			{/if}

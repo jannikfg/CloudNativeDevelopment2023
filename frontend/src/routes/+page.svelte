@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import * as api from '$lib/api';
 	import { PUBLIC_RIDESERVICE_URL } from '$env/static/public';
+	import { user } from '$lib/stores/user-store';
 
 	let rides: object[] = [];
 
@@ -18,25 +19,6 @@
 	let driver = '';
 	let email = '';
 	let description = '';
-
-	onMount(async () => {
-		rides = await loadAllRides();
-	});
-
-	async function loadAllRides() {
-		const url = '/api/rides';
-		try {
-			const response = await fetch(url, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			return await response.json();
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	let editMode: 'add' | null = null;
 
@@ -66,6 +48,15 @@
 		editMode = null;
 	}
 
+	onMount(async () => {
+		rides = await loadAllRides();
+		console.log($user.verified);
+	});
+
+	async function loadAllRides() {
+		return api.get(PUBLIC_RIDESERVICE_URL, 'all');
+	}
+
 	/*
 	function togglefavorite(event: CustomEvent<string>) {
 		const id = event.detail;
@@ -77,15 +68,11 @@
 </script>
 
 <main>
-	<div class="ride-controls">
-		<Button on:click={() => (editMode = 'add')}>New Ride</Button>
+	<div>
+		<h3>Eigene Fahrten kannst du unter "Geplante Fahrten" hinzufügen, wenn du eingeloggt bist</h3>
 	</div>
-	{#if editMode === 'add'}
-		<EditRide on:save={addRide} />
-	{/if}
 
 	<RideGrid {rides} />
-	<!--<RideGrid {rides} on:togglefavorite={togglefavorite} /> -->
 </main>
 
 <style>

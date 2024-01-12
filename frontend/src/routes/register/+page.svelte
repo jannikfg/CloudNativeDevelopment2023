@@ -1,8 +1,66 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { userStore } from '$lib/stores/user-store.js';
+	import { user } from '$lib/stores/user-store.ts';
+	import { goto } from '$app/navigation';
+	import { PUBLIC_USERSERVICE_URL } from '$env/static/public';
 
-	export let form;
+	let email = '';
+	let password = '';
+	let firstName = '';
+	let lastName = '';
+	let birthDate = '';
+
+	async function send({ method, base, path, data }) {
+		const opts = { method, headers: {} };
+
+		if (data) {
+			opts.headers['Content-Type'] = 'application/json';
+			opts.body = JSON.stringify(data);
+		}
+		console.log('Logging in API.js' + opts.body);
+
+		console.log('Logging in API.js:' + base + '/' + path);
+
+		const res = await fetch(`${base}/${path}`, opts);
+		if (res.ok || res.status === 422) {
+			const text = await res.text();
+			return text ? JSON.parse(text) : {};
+		}
+
+		// @ts-ignore
+		throw error(res.status);
+	}
+
+	async function sendRegistration() {
+		const requestBody = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			password: password,
+			birthDate: birthDate
+		};
+		console.log(requestBody);
+		return send({
+			method: 'POST',
+			base: PUBLIC_USERSERVICE_URL,
+			path: 'create',
+			data: requestBody
+		});
+	}
+
+	async function registerUser() {
+		let response = await sendRegistration();
+		console.log(response);
+		if (response.email === email) {
+			console.log($user.verified);
+			$user.verified = true;
+			$user.email = email;
+			$user.firstName = firstName;
+			goto('/plannedRides');
+		} else {
+			alert('Wrong email or password');
+		}
+	}
 </script>
 
 <svelte:head>
@@ -18,14 +76,25 @@
 					<a href="/login">Have an account?</a>
 				</p>
 
-				<form use:enhance method="POST">
+				<form on:submit|preventDefault={registerUser}>
 					<fieldset class="form-group">
 						<input
 							class="form-control form-control-lg"
-							name="username"
+							name="firstName"
 							type="text"
 							required
-							placeholder="Your Name"
+							bind:value={firstName}
+							placeholder="Your Firstname"
+						/>
+					</fieldset>
+					<fieldset class="form-group">
+						<input
+							class="form-control form-control-lg"
+							name="lastName"
+							type="text"
+							bind:value={lastName}
+							required
+							placeholder="Your Lastname"
 						/>
 					</fieldset>
 					<fieldset class="form-group">
@@ -33,6 +102,7 @@
 							class="form-control form-control-lg"
 							name="email"
 							type="email"
+							bind:value={email}
 							required
 							placeholder="Email"
 						/>
@@ -43,7 +113,18 @@
 							name="password"
 							type="password"
 							required
+							bind:value={password}
 							placeholder="Password"
+						/>
+					</fieldset>
+					<fieldset class="form-group">
+						<input
+							class="form-control form-control-lg"
+							name="birthDate"
+							type="text"
+							required
+							bind:value={birthDate}
+							placeholder="Birthdate"
 						/>
 					</fieldset>
 					<button class="btn btn-lg btn-primary pull-xs-right">Sign up</button>
