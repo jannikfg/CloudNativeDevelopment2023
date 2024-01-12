@@ -14,6 +14,7 @@
 	let driver = '';
 	let email = '';
 	let description = '';
+	let capacity = 0;
 
 	const dispatch = createEventDispatcher();
 
@@ -25,7 +26,8 @@
 			time: time,
 			driver: driver,
 			email: email,
-			description: description
+			description: description,
+			capacity: capacity
 		});
 	}
 
@@ -83,6 +85,13 @@
 			controlType="textarea"
 			rows="3"
 			on:input={(event) => (description = event.target.value)}
+		/>
+		<TextInput
+			id="capacity"
+			label="Capacity"
+			value={capacity}
+			type="number"
+			on:input={(event) => (capacity = event.target.value)}
 		/>
 	</form>
 

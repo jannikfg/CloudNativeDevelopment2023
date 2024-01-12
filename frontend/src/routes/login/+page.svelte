@@ -48,8 +48,10 @@
 		console.log(response);
 		if (response.verified) {
 			console.log($user.verified);
-			goto('/plannedRides');
 			$user.verified = true;
+			$user.email = email;
+			$user.firstName = response.firstName;
+			goto('/plannedRides');
 		} else {
 			alert('Wrong email or password');
 		}

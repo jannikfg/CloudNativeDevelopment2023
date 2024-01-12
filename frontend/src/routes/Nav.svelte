@@ -29,7 +29,7 @@
 				</li>
 
 				<li class="nav-item">
-					<a href="/user}" class="nav-link"> Jannik</a>
+					<a href="/user}" class="nav-link">{$user.firstName}</a>
 				</li>
 			{:else if $user.verified === false}
 				<li class="nav-item">

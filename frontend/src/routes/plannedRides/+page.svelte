@@ -12,7 +12,7 @@
 
 	let rides = [];
 
-	let email = 'test@test.de';
+	let email = $user.email;
 
 	onMount(async () => {
 		rides = await loadAllCustomRides(email);
@@ -49,7 +49,7 @@
 			time: ride.time,
 			driver: ride.driver,
 			description: ride.description,
-			capacity: 4
+			capacity: ride.capacity
 		};
 		return send({
 			method: 'POST',
@@ -88,7 +88,7 @@
 			time: event.detail.time,
 			driver: event.detail.driver,
 			description: event.detail.description,
-			capacity: 4
+			capacity: event.detail.capacity
 		};
 
 		await createNewRide(newRide);
