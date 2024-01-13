@@ -54,7 +54,7 @@ public class BookingController {
   }
 
   @GET
-  @Path("user/{user}")
+  @Path("/user/{user}")
   public List<BookingResponse> getBookingsByUser(@PathParam("user") String user) {
     return bookingService.findBookingByUser(user).stream().map(BookingResponse::fromEntity)
         .toList();

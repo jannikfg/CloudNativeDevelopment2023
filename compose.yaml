@@ -7,8 +7,17 @@ include:
   - ./analytics-service/docker-compose.yml
 
 services:
+  frontend:
+    build: ./frontend
+    image: frontend
+    container_name: frontend
+    ports:
+      - 8084:8084
+    networks:
+      - rede-rede-network
   nginx:
     image: nginx:latest
+    container_name: nginx
     ports:
       - 80:80
     volumes:
