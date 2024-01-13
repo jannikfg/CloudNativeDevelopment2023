@@ -58,6 +58,8 @@ jobs:
 
       - name: Build image frontend
         working-directory: ./frontend
+        env:
+          PUBLIC_USERSERVICE_URL: 'http://userservice:8080/api/v1/users'
         run: docker build . -t frontend:latest
       - name: Tag image frontend
         run: |
