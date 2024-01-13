@@ -12,7 +12,7 @@ services:
     image: frontend
     container_name: frontend
     ports:
-      - 8084:8080
+      - 8084:8084
     networks:
       - rede-rede-network
   nginx:
@@ -28,7 +28,6 @@ services:
       - bookingservice
       - userservice
       - analyticsservice
-      - frontend
     networks:
       - rede-rede-network
 

@@ -1,10 +1,11 @@
 <script>
   export let booking;
+  import icon from '$lib/bookings/car_icon.png';
 </script>
 
 <div class="bookings_list_item">
   <div class="bookings_list_item_title">
-    <img class="bookings_list_item_icon" src="src/lib/bookings/car_icon.png" alt="car icon">
+    <img class="bookings_list_item_icon" src={icon} alt="car icon">
     <p>{booking.ride.id}</p>
   </div>
   <div class="bookings_list_item_content">

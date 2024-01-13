@@ -26,10 +26,15 @@
 			date: '2023-10-01',
 			rideId: id
 		};
-		console.log(requestBody);
 
-		send({ method: 'POST', base: PUBLIC_BOOKINGSERVICE_URL, path: 'create', data: requestBody });
-		goto('/bookings');
+    try {
+      const res = await send({ method: 'POST', base: PUBLIC_BOOKINGSERVICE_URL, path: 'create', data: requestBody });
+      alert('Ride booked!');
+    } catch (e) {
+      console.log(e);
+      alert('Ride could not be booked!');
+    }
+
 	}
 	async function send({ method, base, path, data }) {
 		const opts = { method, headers: {} };

@@ -12,7 +12,9 @@
 <style>
   .bookings_list {
     display: flex;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
   }
 </style>
