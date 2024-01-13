@@ -55,6 +55,16 @@ jobs:
       - name: Test analyticsservice
         working-directory: ./analytics-service
         run: mvn test
+
+      - name: Build image frontend
+        working-directory: ./frontend
+        run: docker build . -t frontend:latest
+      - name: Tag image frontend
+        run: |
+          docker tag frontend:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/frontend:latest
+      - name: Push image frontend
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/frontend:latest
       
       - name: Build image imageservice
         working-directory: ./image-service
