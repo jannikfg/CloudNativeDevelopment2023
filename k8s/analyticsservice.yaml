@@ -1,25 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: analyticsservice
   labels:
-    app: frontend
+    app: analyticsservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: analyticsservice
   template:
     metadata:
       labels:
-        app: frontend
+        app: analyticsservice
     spec:
       containers:
-        - name: frontend
-          image: ghcr.io/jannikfg/cloudnativedevelopment2023/frontend:latest
-          imagePullPolicy: Always
+        - name: analyticsservice
+          image: ghcr.io/jannikfg/cloudnativedevelopment2023/analyticsservice:latest
           ports:
-            - containerPort: 8084
+            - containerPort: 8081
               name: app
       imagePullSecrets:
         - name: ghcr-login-secret
@@ -27,9 +26,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: analyticsservice
   labels:
-    app: frontend
+    app: analyticsservice
 spec:
   ports:
     - port: 80
@@ -37,25 +36,24 @@ spec:
       protocol: TCP
       targetPort: app
   selector:
-    app: frontend
+    app: analyticsservice
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: analyticsservice
   labels:
-    name: ingress
+    app: analyticsservice
 spec:
-  ingressClassName: nginx
   rules:
     - host: localhost
       http:
         paths:
-          - pathType: "Prefix"
-            path: /
+          - path: /api/v1/analytics
+            pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: analyticsservice
                 port:
                   name: app

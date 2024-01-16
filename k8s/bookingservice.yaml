@@ -1,25 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: bookingservice
   labels:
-    app: frontend
+    app: bookingservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: bookingservice
   template:
     metadata:
       labels:
-        app: frontend
+        app: bookingservice
     spec:
       containers:
-        - name: frontend
-          image: ghcr.io/jannikfg/cloudnativedevelopment2023/frontend:latest
-          imagePullPolicy: Always
+        - name: bookingservice
+          image: ghcr.io/jannikfg/cloudnativedevelopment2023/bookingservice:latest
           ports:
-            - containerPort: 8084
+            - containerPort: 8080
               name: app
       imagePullSecrets:
         - name: ghcr-login-secret
@@ -27,9 +26,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: bookingservice
   labels:
-    app: frontend
+    app: bookingservice
 spec:
   ports:
     - port: 80
@@ -37,25 +36,24 @@ spec:
       protocol: TCP
       targetPort: app
   selector:
-    app: frontend
+    app: bookingservice
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: bookingservice
   labels:
-    name: ingress
+    app: bookingservice
 spec:
-  ingressClassName: nginx
   rules:
     - host: localhost
       http:
         paths:
-          - pathType: "Prefix"
-            path: /
+          - path: /api/v1/bookings
+            pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: bookingservice
                 port:
                   name: app

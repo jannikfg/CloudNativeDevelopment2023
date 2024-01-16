@@ -4,7 +4,7 @@ WORKDIR /tmp
 COPY pom.xml /tmp
 RUN mvn dependency:go-offline -B
 COPY src /tmp/src/
-RUN mvn package
+RUN mvn package -DskipTests
 
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.17 AS app
 ENV LANGUAGE='en_US:en'

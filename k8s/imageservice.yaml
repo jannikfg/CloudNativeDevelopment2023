@@ -1,25 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: imageservice
   labels:
-    app: frontend
+    app: imageservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: imageservice
   template:
     metadata:
       labels:
-        app: frontend
+        app: imageservice
     spec:
       containers:
-        - name: frontend
-          image: ghcr.io/jannikfg/cloudnativedevelopment2023/frontend:latest
-          imagePullPolicy: Always
+        - name: imageservice
+          image: ghcr.io/jannikfg/cloudnativedevelopment2023/imageservice:latest
           ports:
-            - containerPort: 8084
+            - containerPort: 3000
               name: app
       imagePullSecrets:
         - name: ghcr-login-secret
@@ -27,9 +26,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: imageservice
   labels:
-    app: frontend
+    app: imageservice
 spec:
   ports:
     - port: 80
@@ -37,25 +36,24 @@ spec:
       protocol: TCP
       targetPort: app
   selector:
-    app: frontend
+    app: imageservice
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: imageservice
   labels:
-    name: ingress
+    app: imageservice
 spec:
-  ingressClassName: nginx
   rules:
     - host: localhost
       http:
         paths:
-          - pathType: "Prefix"
-            path: /
+          - path: /api/v1/images
+            pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: imageservice
                 port:
                   name: app
