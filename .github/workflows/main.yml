@@ -1,0 +1,109 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # Setup hardware emulator using QEMU
+      #- name: Set up QEMU
+      #  uses: docker/setup-qemu-action@v3
+        
+        # Setup Docker Buildx for multi-arch images
+      #- name: Set up Docker Buildx
+      #  uses: docker/setup-buildx-action@v3
+        
+      - name: Log into registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      #- name: Build and push imageservice
+      #  uses: docker/build-push-action@v5
+      #  with:
+      #    context: ./image-service
+      #    platforms: linux/arm64
+      #    push: true
+      #    tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/cnd-demo/imageservice:latest
+
+      - name: Setup Java Test Environment
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Test bookingservice
+        working-directory: ./booking-service
+        run: mvn test
+      - name: Test userservice
+        working-directory: ./user-service
+        run: mvn test
+      - name: Test analyticsservice
+        working-directory: ./analytics-service
+        run: mvn test
+
+      - name: Build image frontend
+        working-directory: ./frontend
+        env:
+          PUBLIC_USERSERVICE_URL: 'http://userservice:8080/api/v1/users'
+        run: docker build . -t frontend:latest
+      - name: Tag image frontend
+        run: |
+          docker tag frontend:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/frontend:latest
+      - name: Push image frontend
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/frontend:latest
+      
+      - name: Build image imageservice
+        working-directory: ./image-service
+        run: docker build . -t imageservice:latest
+      - name: Tag image imageservice
+        run: |
+          docker tag imageservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/imageservice:latest
+      - name: Push image imageservice
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/imageservice:latest
+        
+      - name: Build image bookingservice
+        working-directory: ./booking-service
+        run: docker build . -t bookingservice:latest
+      - name: Tag image bookingservice
+        run: |
+          docker tag bookingservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/bookingservice:latest
+      - name: Push image bookingservice
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/bookingservice:latest
+        
+      - name: Build image userservice
+        working-directory: ./user-service
+        run: docker build . -t userservice:latest
+      - name: Tag image userservice
+        run: |
+          docker tag userservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/userservice:latest
+      - name: Push image userservice
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/userservice:latest
+        
+      - name: Build image analyticsservice
+        working-directory: ./analytics-service
+        run: docker build . -t analyticsservice:latest
+      - name: Tag image analyticsservice
+        run: |
+          docker tag analyticsservice:latest ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/analyticsservice:latest
+      - name: Push image analyticsservice
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/analyticsservice:latest
