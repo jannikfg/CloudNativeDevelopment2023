@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgres-userservice
 spec:
@@ -30,7 +30,28 @@ spec:
               name: postgres-userservice-volume
           ports:
             - containerPort: 5432
+              name: app
       volumes:
         - name: postgres-userservice-volume
           emptyDir:
             sizeLimit: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-userservice
+spec:
+  selector:
+    app: postgres-userservice
+  ports:
+    - port: 5432
+      targetPort: app
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-userservice-config
+data:
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_DB: userservice
