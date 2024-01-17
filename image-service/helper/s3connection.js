@@ -54,12 +54,13 @@ const downloadFromS3 = async (key) => {
       })
       .catch((error) => {
         console.error(error);
+        throw error;
       });
 
     return imageAsBase64;
-  } catch (err) {
-    console.error("Error fetching from Minio: ", err);
-    throw err;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };
 
