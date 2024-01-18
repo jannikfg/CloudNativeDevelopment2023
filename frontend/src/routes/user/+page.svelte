@@ -6,7 +6,7 @@
 	import { enhance } from '$app/forms';
 	import { user } from '$lib/stores/user-store.ts';
   import icon from '$lib/user/user_icon.png';
-
+  
 	let userObject = null;
 
 	onMount(async () => {
@@ -21,7 +21,6 @@
 		return api.get(PUBLIC_USERSERVICE_URL, path);
 	}
 
-
 	let image = null;
 
 	async function loadImage(imageId) {
@@ -31,7 +30,6 @@
 				'Content-Type': 'text/text'
 			}
 		});
-
 
     if (res.status === 200) {
 		  const imageBase64 = await res.text();
