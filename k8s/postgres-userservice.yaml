@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-userservice
+spec:
+  selector:
+    matchLabels:
+      app: postgres-userservice
+  template:
+    metadata:
+      labels:
+        app: postgres-userservice
+    spec:
+      containers:
+        - name: postgres-userservice
+          imagePullPolicy: IfNotPresent
+          image: postgres:15.1-alpine
+          envFrom:
+            - configMapRef:
+                name: postgres-userservice-config
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "200m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-userservice-volume
+          ports:
+            - containerPort: 5432
+              name: app
+      volumes:
+        - name: postgres-userservice-volume
+          emptyDir:
+            sizeLimit: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-userservice
+spec:
+  selector:
+    app: postgres-userservice
+  ports:
+    - port: 5432
+      targetPort: app
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-userservice-config
+data:
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_DB: userservice

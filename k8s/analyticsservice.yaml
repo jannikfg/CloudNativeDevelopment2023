@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analyticsservice
+  labels:
+    app: analyticsservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analyticsservice
+  template:
+    metadata:
+      labels:
+        app: analyticsservice
+    spec:
+      containers:
+        - name: analyticsservice
+          image: ghcr.io/jannikfg/cloudnativedevelopment2023/analyticsservice:latest
+          ports:
+            - containerPort: 8081
+              name: app
+      imagePullSecrets:
+        - name: ghcr-login-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analyticsservice
+  labels:
+    app: analyticsservice
+spec:
+  ports:
+    - port: 80
+      name: app
+      protocol: TCP
+      targetPort: app
+  selector:
+    app: analyticsservice
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: analyticsservice
+  labels:
+    app: analyticsservice
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /api/v1/analytics
+            pathType: Prefix
+            backend:
+              service:
+                name: analyticsservice
+                port:
+                  name: app
