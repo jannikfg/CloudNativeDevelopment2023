@@ -14,6 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AveragePassengerCount {
   private LocalDate date;
-  private int averagePassengerCount;
+  private double averagePassengerCount;
 
 }

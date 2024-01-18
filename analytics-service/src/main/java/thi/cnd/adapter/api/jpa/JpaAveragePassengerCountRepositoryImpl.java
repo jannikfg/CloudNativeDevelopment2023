@@ -25,4 +25,10 @@ public class JpaAveragePassengerCountRepositoryImpl implements AveragePassengerC
     return jpaAveragePassengerCountRepository.findByIdOptional(date).map(AveragePassengerCountEntity::toDomainModel).orElse(null);
   }
 
+  @Override
+  public void deleteAveragePassengerCount(LocalDate date) {
+    jpaAveragePassengerCountRepository.deleteById(date);
+  }
+
+
 }

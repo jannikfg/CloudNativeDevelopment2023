@@ -24,4 +24,9 @@ public class JpaRidesPerDayRepositoryImpl implements RidesPerDayRepository {
   public RidesPerDay getRidesPerDay(LocalDate date) {
     return jpaRidesPerDayRepository.findByIdOptional(date).map(RidesPerDayEntity::toDomainModel).orElse(null);
   }
+
+  @Override
+  public void deleteRidesPerDay(LocalDate date) {
+    jpaRidesPerDayRepository.deleteById(date);
+  }
 }
