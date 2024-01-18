@@ -64,3 +64,4 @@ spec:
                 name: bookingservice
                 port:
                   name: app
+

@@ -29,6 +29,12 @@
 				</li>
 
 				<li class="nav-item">
+					<a href="/analytics" class="nav-link" class:active={$page.url.pathname === '/analytics'}>
+						<i class="ion-compose" />&nbsp;Analyse
+					</a>
+				</li>
+
+				<li class="nav-item">
 					<a href="/user" class="nav-link">{$user.firstName}</a>
 				</li>
 			{:else if $user.verified === false}

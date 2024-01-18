@@ -18,6 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
       # Setup hardware emulator using QEMU
       #- name: Set up QEMU
       #  uses: docker/setup-qemu-action@v3
@@ -44,8 +45,9 @@ jobs:
       - name: Setup Java Test Environment
         uses: actions/setup-java@v3
         with:
-          java-version: "17"
-          distribution: "temurin"
+          java-version: '17'
+          distribution: 'temurin'
+
       - name: Test bookingservice
         working-directory: ./booking-service
         run: mvn test
@@ -65,7 +67,7 @@ jobs:
       - name: Push image frontend
         run: |
           docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/frontend:latest
-
+          
       - name: Build image imageservice
         working-directory: ./image-service
         run: docker build . -t imageservice:latest
@@ -76,6 +78,7 @@ jobs:
         run: |
           docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/imageservice:latest
 
+
       - name: Build image minio
         working-directory: ./image-service/minio/.
         run: docker build . -t minio:latest
@@ -85,6 +88,7 @@ jobs:
       - name: Push image imageservice
         run: |
           docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/cloudnativedevelopment2023/minio:latest
+
 
       - name: Build image bookingservice
         working-directory: ./booking-service

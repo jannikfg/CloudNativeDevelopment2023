@@ -26,5 +26,10 @@ public class JpaRidesPerLocationRepositoryImpl implements RidesPerLocationReposi
     return ridesPerLocationEntity.map(RidesPerLocationEntity::toDomainModel).orElse(null);
   }
 
+  @Override
+  public void deleteRidesPerLocation(String location) {
+    jpaRidesPerLocationRepository.deleteById(location);
+  }
+
 
 }
