@@ -18,7 +18,7 @@ spec:
         - name: userservice
           image: ghcr.io/jannikfg/cloudnativedevelopment2023/userservice:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
               name: app
       imagePullSecrets:
         - name: ghcr-login-secret
@@ -31,7 +31,7 @@ metadata:
     app: userservice
 spec:
   ports:
-    - port: 8080
+    - port: 80
       name: app
       protocol: TCP
       targetPort: app

@@ -18,7 +18,7 @@ spec:
         - name: analyticsservice
           image: ghcr.io/jannikfg/cloudnativedevelopment2023/analyticsservice:latest
           ports:
-            - containerPort: 8081
+            - containerPort: 8082
               name: app
       imagePullSecrets:
         - name: ghcr-login-secret
