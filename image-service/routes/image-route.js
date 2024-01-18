@@ -3,7 +3,6 @@ const router = express.Router();
 const s3connection = require("../helper/s3connection");
 
 router.post("/:id", async (req, res) => {
-  console.log("request body received");
   const { id } = req.params;
   await s3connection
     .uploadToS3(req, id)
@@ -27,18 +26,6 @@ router.get("/:key", async (req, res) => {
     const data = await s3connection.downloadFromS3(key);
     res.writeHead(200, { "Content-Type": "image" });
     res.end(data);
-  } catch (err) {
-    res.status(500).send("Error fetching image.");
-  }
-});
-
-router.get("/view/:key", async (req, res) => {
-  const { key } = req.params;
-  try {
-    const data = await s3connection.downloadFromS3(key);
-    res.send(
-      '<html><body><img src="data:image;base64,' + data + '" / ></body></html>'
-    );
   } catch (err) {
     res.status(500).send("Error fetching image.");
   }

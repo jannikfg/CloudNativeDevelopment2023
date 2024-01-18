@@ -57,3 +57,11 @@ spec:
                 name: bookingservice
                 port:
                   name: app
+          - path: /api/v1/rides
+            pathType: Prefix
+            backend:
+              service:
+                name: bookingservice
+                port:
+                  name: app
+

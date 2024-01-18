@@ -1,12 +1,12 @@
 const { Upload } = require("@aws-sdk/lib-storage");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const Minio = require("minio");
 const { IncomingForm } = require("formidable");
 const Transform = require("stream").Transform;
 
 const accessKeyId = process.env.ACCESS_KEY_ID;
 const secretAccessKey = process.env.ACCESS_KEY_SECRET;
-const Bucket = process.env.BUCKET_NAME;
+const bucket = process.env.BUCKET_NAME;
 const region = process.env.REGION;
 const s3_endpoint = process.env.S3_ENDPOINT;
 
@@ -19,19 +19,48 @@ const s3client = new S3Client({
   region,
 });
 
+const minioclient = new Minio.Client({
+  endPoint: s3_endpoint,
+  port: 9000,
+  useSSL: false,
+  accessKey: accessKeyId,
+  secretKey: secretAccessKey,
+});
+
+function getImageAsBase64(bucket, object) {
+  return new Promise((resolve, reject) => {
+    minioclient.getObject(bucket, object, (err, dataStream) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const chunks = [];
+      dataStream.on("data", (chunk) => chunks.push(chunk));
+      dataStream.on("end", () => {
+        const buffer = Buffer.concat(chunks);
+        const base64Image = buffer.toString("base64");
+        resolve(base64Image);
+      });
+    });
+  });
+}
+
 const downloadFromS3 = async (key) => {
-  const input = {
-    Bucket: process.env.BUCKET_NAME,
-    Key: key,
-  };
-  const command = new GetObjectCommand(input);
   try {
-    const image = s3client.send(command);
-    const imageToString = (await image).Body.transformToString("base64");
-    return imageToString;
-  } catch (err) {
-    console.error("Error fetching from S3: ", err);
-    throw err;
+    const imageAsBase64 = getImageAsBase64(bucket, key)
+      .then((base64Image) => {
+        return base64Image;
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error;
+      });
+
+    return imageAsBase64;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };
 
@@ -68,27 +97,13 @@ const uploadToS3 = async (req, id) => {
           form.emit("error", e);
         });
 
-        // upload to S3
-        new Upload({
-          client: s3client,
-          params: {
-            ACL: "public-read",
-            Bucket,
-            Key: id,
-            Body: this._writeStream,
-          },
-          tags: [], // optional tags
-          queueSize: 4, // optional concurrency configuration
-          partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
-          leavePartsOnError: false, // optional manually handle dropped parts
-        })
-          .done()
-          .then((data) => {
-            form.emit("data", { name: "complete", value: data });
-          })
-          .catch((err) => {
+        minioclient.putObject(bucket, id, this._writeStream, (err, etag) => {
+          if (err) {
             form.emit("error", err);
-          });
+          }
+          console.log("File uploaded successfully.");
+          form.emit("data", { name: "complete", value: etag });
+        });
       };
 
       file.end = function (cb) {
