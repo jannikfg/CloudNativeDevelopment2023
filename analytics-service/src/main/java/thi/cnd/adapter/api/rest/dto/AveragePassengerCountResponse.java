@@ -17,7 +17,7 @@ import thi.cnd.domain.model.RidesPerLocation;
 @AllArgsConstructor
 public class AveragePassengerCountResponse {
   private LocalDate date;
-  private int averagePassengerCount;
+  private double averagePassengerCount;
 
   public static AveragePassengerCountResponse fromDomainObject(
       AveragePassengerCount averagePassengerCount){

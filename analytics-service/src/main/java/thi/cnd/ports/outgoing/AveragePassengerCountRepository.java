@@ -6,4 +6,6 @@ import thi.cnd.domain.model.AveragePassengerCount;
 public interface AveragePassengerCountRepository {
   void save(AveragePassengerCount averagePassengerCount);
   AveragePassengerCount getAveragePassengerCount(LocalDate date);
+
+  void deleteAveragePassengerCount(LocalDate date);
 }

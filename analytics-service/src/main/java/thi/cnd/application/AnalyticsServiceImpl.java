@@ -83,10 +83,8 @@ public class AnalyticsServiceImpl implements RidesPerDayService, RidesPerLocatio
     if (existingRidesPerDay == null) {
       ridesPerDayRepository.save(ridesPerDay);
     } else {
-      if (!existingRidesPerDay.equals(ridesPerDay)) {
-        existingRidesPerDay.setRidesPerDay(ridesPerDay.getRidesPerDay());
-        ridesPerDayRepository.save(existingRidesPerDay);
-      }
+      ridesPerDayRepository.deleteRidesPerDay(ridesPerDay.getDate());
+      ridesPerDayRepository.save(ridesPerDay);
     }
   }
 
@@ -134,10 +132,8 @@ public class AnalyticsServiceImpl implements RidesPerDayService, RidesPerLocatio
     if (existingRidesPerLocation == null) {
       ridesPerLocationRepository.save(ridesPerLocation);
     } else {
-      if (!existingRidesPerLocation.equals(ridesPerLocation)) {
-        existingRidesPerLocation.setRidesPerLocation(ridesPerLocation.getRidesPerLocation());
-        ridesPerLocationRepository.save(existingRidesPerLocation);
-      }
+      ridesPerLocationRepository.deleteRidesPerLocation(ridesPerLocation.getLocation());
+      ridesPerLocationRepository.save(ridesPerLocation);
     }
   }
 
@@ -171,6 +167,9 @@ public class AnalyticsServiceImpl implements RidesPerDayService, RidesPerLocatio
     List<Booking> bookings = dataLoadService.getAllBookings();
     List<AveragePassengerCount> averagePassengerCountList = new ArrayList<>();
 
+    System.out.println("Rides: " + rides);
+    System.out.println("Bookings: " + bookings);
+
     Map<LocalDate, Integer> averagePassengerCountMap = new HashMap<>();
 
     for (Ride ride : rides) {
@@ -178,13 +177,23 @@ public class AnalyticsServiceImpl implements RidesPerDayService, RidesPerLocatio
       averagePassengerCountMap.put(date, averagePassengerCountMap.getOrDefault(date, 0) + getPassengerCountPerRide(ride, bookings));
     }
 
+    System.out.println("AveragePassengerCountMap: " + averagePassengerCountMap);
+
     for (Entry<LocalDate, Integer> entry : averagePassengerCountMap.entrySet()) {
+      System.out.println("Entry: " + entry);
+      System.out.println("Rides Size" + rides.size());
       AveragePassengerCount averagePassengerCount = new AveragePassengerCount();
       averagePassengerCount.setDate(entry.getKey());
-      averagePassengerCount.setAveragePassengerCount(entry.getValue() / rides.size());
+      int divisor = rides.stream().filter(ride -> ride.getDate().equals(entry.getKey())).toList().size();
+      double averagePassengerCountDouble = (double) entry.getValue() / divisor;
+      System.out.println("AveragePassengerCountDouble: " + averagePassengerCountDouble);
+      averagePassengerCount.setAveragePassengerCount(averagePassengerCountDouble);
       averagePassengerCountList.add(averagePassengerCount);
     }
+
+    System.out.println("AveragePassengerCountList: " + averagePassengerCountList);
     for (AveragePassengerCount averagePassengerCount : averagePassengerCountList) {
+      System.out.println("AveragePassengerCount: " + averagePassengerCount.getAveragePassengerCount());
       saveAveragePassengerCount(averagePassengerCount);
     }
 
@@ -199,10 +208,9 @@ public class AnalyticsServiceImpl implements RidesPerDayService, RidesPerLocatio
     if (existingAveragePassengerCount == null) {
       averagePassengerCountRepository.save(averagePassengerCount);
     } else {
-      if (!existingAveragePassengerCount.equals(averagePassengerCount)) {
-        existingAveragePassengerCount.setAveragePassengerCount(averagePassengerCount.getAveragePassengerCount());
-        averagePassengerCountRepository.save(existingAveragePassengerCount);
-      }
+      averagePassengerCountRepository.deleteAveragePassengerCount(averagePassengerCount.getDate());
+      averagePassengerCountRepository.save(averagePassengerCount);
+
     }
   }
 

@@ -5,6 +5,7 @@
 	import { PUBLIC_IMAGESERVICE_URL } from '$env/static/public';
 	import { enhance } from '$app/forms';
 	import { user } from '$lib/stores/user-store.ts';
+  import icon from '$lib/user/user_icon.png';
 
 	let userObject = null;
 
@@ -16,15 +17,13 @@
 	});
 
 	function loadUser() {
-		// TODO: Get user from session
 		let path = 'user/' + $user.email;
 		return api.get(PUBLIC_USERSERVICE_URL, path);
 	}
 
-	let image = '';
+	let image = null;
 
 	async function loadImage(imageId) {
-		console.log('Loading image');
 		const res = await fetch(`${PUBLIC_IMAGESERVICE_URL}/${imageId}`, {
 			method: 'GET',
 			headers: {
@@ -32,8 +31,13 @@
 			}
 		});
 
-		const imageBase64 = await res.text();
-		image = 'data:image;base64,' + imageBase64;
+    if (res.status === 200) {
+		  const imageBase64 = await res.text();
+		  image = 'data:image;base64,' + imageBase64;
+    }
+    else {
+      image = null;
+    }
 	}
 </script>
 
@@ -42,7 +46,11 @@
 </svelte:head>
 
 <div class="profile">
-	<img class="profile_avatar" src={image} alt="user" />
+  {#if image}
+    <img class="profile_avatar" src={image} alt="user" />
+  {:else}
+	  <img class="profile_avatar" src={icon} alt="user" />
+  {/if}
 	<form
 		method="post"
 		use:enhance={() => {
