@@ -7,4 +7,6 @@ public interface RidesPerDayRepository {
   void save(RidesPerDay ridesPerDay);
 
   RidesPerDay getRidesPerDay(LocalDate date);
+
+  void deleteRidesPerDay(LocalDate date);
 }

@@ -20,7 +20,7 @@ import thi.cnd.domain.model.AveragePassengerCount;
 public class AveragePassengerCountEntity {
   @Id
   private LocalDate date;
-  private int averagePassengerCount;
+  private double averagePassengerCount;
 
   public AveragePassengerCount toDomainModel() {
     return new AveragePassengerCount(date, averagePassengerCount);
