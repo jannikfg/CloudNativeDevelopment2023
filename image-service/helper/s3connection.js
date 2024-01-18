@@ -46,6 +46,29 @@ function getImageAsBase64(bucket, object) {
   });
 }
 
+function createBucketIfNotExistant(bucket) {
+  minioclient.bucketExists(bucket, (err, exists) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    if (exists) {
+      console.log(`Bucket '${bucket}' already exists.`);
+    } else {
+      // Create the bucket if it doesn't exist
+      minioclient.makeBucket(bucket, region, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`Bucket '${bucket}' created successfully.`);
+      });
+    }
+  });
+}
+
 const downloadFromS3 = async (key) => {
   try {
     const imageAsBase64 = getImageAsBase64(bucket, key)
@@ -65,6 +88,7 @@ const downloadFromS3 = async (key) => {
 };
 
 const uploadToS3 = async (req, id) => {
+  createBucketIfNotExistant(bucket);
   return new Promise((resolve, reject) => {
     let options = {
       maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
@@ -95,27 +119,6 @@ const uploadToS3 = async (req, id) => {
 
         this._writeStream.on("error", (e) => {
           form.emit("error", e);
-        });
-
-        minioclient.bucketExists(bucket, (err, exists) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-
-          if (exists) {
-            console.log(`Bucket '${bucket}' already exists.`);
-          } else {
-            // Create the bucket if it doesn't exist
-            minioclient.makeBucket(bucket, region, (err) => {
-              if (err) {
-                console.error(err);
-                return;
-              }
-
-              console.log(`Bucket '${bucket}' created successfully.`);
-            });
-          }
         });
 
         minioclient.putObject(bucket, id, this._writeStream, (err, etag) => {
