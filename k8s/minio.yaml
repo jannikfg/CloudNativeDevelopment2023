@@ -33,6 +33,8 @@ spec:
               name: app
             - containerPort: 9090
               name: console
+      imagePullSecrets:
+        - name: ghcr-login-secret
       volumes:
         - name: minio-volume
           emptyDir:
@@ -47,8 +49,10 @@ spec:
     app: minio
   ports:
     - port: 9000
+      name: app
       targetPort: app
     - port: 9090
+      name: console
       targetPort: console
 ---
 apiVersion: v1
