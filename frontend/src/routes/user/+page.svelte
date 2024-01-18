@@ -6,7 +6,7 @@
 	import { enhance } from '$app/forms';
 	import { user } from '$lib/stores/user-store.ts';
   import icon from '$lib/user/user_icon.png';
-  
+
 	let userObject = null;
 
 	onMount(async () => {
