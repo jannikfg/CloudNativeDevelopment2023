@@ -97,6 +97,27 @@ const uploadToS3 = async (req, id) => {
           form.emit("error", e);
         });
 
+        minioclient.bucketExists(bucket, (err, exists) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          if (exists) {
+            console.log(`Bucket '${bucket}' already exists.`);
+          } else {
+            // Create the bucket if it doesn't exist
+            minioclient.makeBucket(bucket, region, (err) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+
+              console.log(`Bucket '${bucket}' created successfully.`);
+            });
+          }
+        });
+
         minioclient.putObject(bucket, id, this._writeStream, (err, etag) => {
           if (err) {
             form.emit("error", err);
