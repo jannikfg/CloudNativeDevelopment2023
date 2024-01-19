@@ -17,8 +17,7 @@ Happy Sharing! 🌍🚗
 ##### Weiterführende Links
 [Link zu Architekturen](/Documentation/Architektur_Overview.md)
 
-[Link zu Installationsanleitung](/Documentation/Architektur_Overview.md)
+[Link zu Installationsanleitung](/Documentation/InstallationGuide.md)
 
-Letzter Link muss noch aktualisiert werden
 
-(Disclaimer: Die Marketing Text in diesem File wurden in Zusammenarbeit mit ChatGPT generiert)
+(Disclaimer: Die Marketingtexte in dieser Datei wurden in Zusammenarbeit mit ChatGPT erarbeitet ;-) )

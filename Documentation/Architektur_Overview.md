@@ -30,4 +30,3 @@ Die Kubernetes-Architektur verdeutlicht, wie unsere Anwendung in einem Kubernete
 ### Innere Architektur des Userservice
 Die Architektur beschreibt den inneren Aufbau des Userservices, der nach dem Architekturstil "Hexagonale Architektur" entwicklet wurde.
 ![Userservice Architektur](/user-service/documentation/architecture.png)
-
