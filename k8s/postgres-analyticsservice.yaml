@@ -18,13 +18,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: postgres-analyticsservice-config
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "200m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-analyticsservice-volume
@@ -33,8 +26,8 @@ spec:
               name: app
       volumes:
         - name: postgres-analyticsservice-volume
-          emptyDir:
-            sizeLimit: 500Mi
+          persistentVolumeClaim:
+            claimName: postgres-analyticsservice-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -55,3 +48,17 @@ data:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
   POSTGRES_DB: analyticsservice
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-analyticsservice-pv-claim
+  labels:
+    app: postgres-analyticsservice
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi

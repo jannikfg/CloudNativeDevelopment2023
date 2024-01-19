@@ -4,6 +4,9 @@ const s3connection = require("../helper/s3connection");
 
 router.post("/:id", async (req, res) => {
   const { id } = req.params;
+
+  s3connection.createBucketIfNotExistant();
+
   await s3connection
     .uploadToS3(req, id)
     .then((data) => {
