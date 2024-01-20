@@ -45,7 +45,7 @@ const createBucketIfNotExistant = () => {
     if (exists) {
       console.log(`Bucket '${bucket}' already exists.`);
     } else {
-      // Create the bucket if it doesn't exist
+      
       minioclient.makeBucket(bucket, region, (err) => {
         if (err) {
           console.error(err);
@@ -79,7 +79,7 @@ const downloadFromS3 = async (key) => {
 const uploadToS3 = async (req, id) => {
   return new Promise((resolve, reject) => {
     let options = {
-      maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
+      maxFileSize: 100 * 1024 * 1024,
       allowEmptyFiles: false,
     };
 
