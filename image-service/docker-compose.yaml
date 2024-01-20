@@ -1,6 +1,6 @@
 services:
-  imageservice-1:
-    container_name: imageservice-1
+  imageservice:
+    container_name: imageservice
     build: .
     image: imageservice
     ports:
@@ -8,16 +8,6 @@ services:
     networks:
       - rede-rede-network
       - image-network
-  imageservice-2:
-    container_name: imageservice-2
-    image: imageservice
-    ports:
-      - 3001:3000
-    networks:
-      - rede-rede-network
-      - image-network
-    depends_on:
-      - imageservice-1
 
   minio:
     image: minio

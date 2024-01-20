@@ -18,13 +18,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: minio-config
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "200m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
           volumeMounts:
             - mountPath: /data
               name: minio-volume
@@ -33,10 +26,12 @@ spec:
               name: app
             - containerPort: 9090
               name: console
+      imagePullSecrets:
+        - name: ghcr-login-secret
       volumes:
         - name: minio-volume
-          emptyDir:
-            sizeLimit: 500Mi
+          persistentVolumeClaim:
+            claimName: minio-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -47,8 +42,10 @@ spec:
     app: minio
   ports:
     - port: 9000
+      name: app
       targetPort: app
     - port: 9090
+      name: console
       targetPort: console
 ---
 apiVersion: v1
@@ -58,3 +55,17 @@ metadata:
 data:
   MINIO_ROOT_USER: minioadmin
   MINIO_ROOT_PASSWORD: minioadmin
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: minio-pv-claim
+  labels:
+    app: minio
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi

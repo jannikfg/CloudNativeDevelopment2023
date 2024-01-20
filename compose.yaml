@@ -23,8 +23,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - imageservice-1
-      - imageservice-2
+      - imageservice
       - bookingservice
       - userservice
       - analyticsservice

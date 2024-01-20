@@ -1,5 +1,3 @@
-const { Upload } = require("@aws-sdk/lib-storage");
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const Minio = require("minio");
 const { IncomingForm } = require("formidable");
 const Transform = require("stream").Transform;
@@ -9,15 +7,6 @@ const secretAccessKey = process.env.ACCESS_KEY_SECRET;
 const bucket = process.env.BUCKET_NAME;
 const region = process.env.REGION;
 const s3_endpoint = process.env.S3_ENDPOINT;
-
-const s3client = new S3Client({
-  endpoint: s3_endpoint,
-  credentials: {
-    accessKeyId,
-    secretAccessKey,
-  },
-  region,
-});
 
 const minioclient = new Minio.Client({
   endPoint: s3_endpoint,
@@ -46,6 +35,29 @@ function getImageAsBase64(bucket, object) {
   });
 }
 
+const createBucketIfNotExistant = () => {
+  minioclient.bucketExists(bucket, (err, exists) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    if (exists) {
+      console.log(`Bucket '${bucket}' already exists.`);
+    } else {
+      
+      minioclient.makeBucket(bucket, region, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`Bucket '${bucket}' created successfully.`);
+      });
+    }
+  });
+};
+
 const downloadFromS3 = async (key) => {
   try {
     const imageAsBase64 = getImageAsBase64(bucket, key)
@@ -67,7 +79,7 @@ const downloadFromS3 = async (key) => {
 const uploadToS3 = async (req, id) => {
   return new Promise((resolve, reject) => {
     let options = {
-      maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
+      maxFileSize: 100 * 1024 * 1024,
       allowEmptyFiles: false,
     };
 
@@ -117,4 +129,4 @@ const uploadToS3 = async (req, id) => {
   });
 };
 
-module.exports = { uploadToS3, downloadFromS3 };
+module.exports = { uploadToS3, downloadFromS3, createBucketIfNotExistant };

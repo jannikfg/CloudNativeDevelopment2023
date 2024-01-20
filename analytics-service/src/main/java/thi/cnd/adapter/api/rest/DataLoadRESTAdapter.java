@@ -10,8 +10,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.FileSystemNotFoundException;
 import java.util.List;
 import org.apache.http.util.EntityUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import thi.cnd.domain.model.inputObjects.Booking;
 import thi.cnd.domain.model.inputObjects.Ride;
 import thi.cnd.ports.ingoing.DataLoadPort;
@@ -19,8 +21,11 @@ import thi.cnd.ports.ingoing.DataLoadPort;
 @ApplicationScoped
 public class DataLoadRESTAdapter implements DataLoadPort {
 
-  static final String BOOKING_SERVICE_RIDES_BASE_URL = "http://localhost:8080/api/v1/rides";
-  static final String BOOKING_SERVICE_BOOKINGS_BASE_URL = "http://localhost:8080/api/v1/bookings";
+  @ConfigProperty(name = "BOOKING_SERVICE_RIDES_BASE_URL")
+  String BOOKING_SERVICE_RIDES_BASE_URL;
+
+  @ConfigProperty(name = "BOOKING_SERVICE_BOOKINGS_BASE_URL")
+  String BOOKING_SERVICE_BOOKINGS_BASE_URL;
 
   public static void main(String[] args) {
     DataLoadRESTAdapter dataLoadRESTAdapter = new DataLoadRESTAdapter();
@@ -38,7 +43,7 @@ public class DataLoadRESTAdapter implements DataLoadPort {
     return objectMapper.readValue(json, Booking[].class);
   }
 
-  private static HttpRequest defineHttpRequest(String baseUrl, String path){
+  private static HttpRequest defineHttpRequest(String baseUrl, String path) {
     HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(baseUrl + path))
         .method("GET", HttpRequest.BodyPublishers.noBody())
@@ -47,7 +52,7 @@ public class DataLoadRESTAdapter implements DataLoadPort {
     return request;
   }
 
-  private static HttpResponse<String> sendRequest(HttpRequest request){
+  private static HttpResponse<String> sendRequest(HttpRequest request) {
     HttpResponse<String> response = null;
     try {
       response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -57,12 +62,11 @@ public class DataLoadRESTAdapter implements DataLoadPort {
     return response;
   }
 
-
   @Override
   public List<Booking> getAllBookings() {
     HttpRequest request = defineHttpRequest(BOOKING_SERVICE_BOOKINGS_BASE_URL, "/all");
     HttpResponse<String> response = sendRequest(request);
-
+    System.out.println(response.body());
     try {
       return List.of(convertJsonToBooking(response.body()));
     } catch (JsonProcessingException e) {
@@ -74,7 +78,9 @@ public class DataLoadRESTAdapter implements DataLoadPort {
   @Override
   public List<Ride> getAllRides() {
     HttpRequest request = defineHttpRequest(BOOKING_SERVICE_RIDES_BASE_URL, "/all");
+    System.out.println(request);
     HttpResponse<String> response = sendRequest(request);
+    System.out.println(response.body());
 
     try {
       return List.of(convertJsonToRide(response.body()));

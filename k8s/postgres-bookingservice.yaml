@@ -18,13 +18,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: postgres-bookingservice-config
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "200m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-bookingservice-volume
@@ -33,8 +26,8 @@ spec:
               name: app
       volumes:
         - name: postgres-bookingservice-volume
-          emptyDir:
-            sizeLimit: 500Mi
+          persistentVolumeClaim:
+            claimName: postgres-bookingservice-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -55,3 +48,17 @@ data:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
   POSTGRES_DB: bookingservice
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-bookingservice-pv-claim
+  labels:
+    app: postgres-bookingservice
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
